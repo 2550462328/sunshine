@@ -1,0 +1,14 @@
+首先共同点它们都是实现对资源的独占，并且都是可重入的，同时基于它们可以实现线程等待/通知的操作。
+
+从不同点来讲
+
+1. synchronized加锁和解锁自动进行，不必担心最后是否释放锁；ReentrantLock加锁和解锁需要手动进行，且次数需一样，否则其他线程无法获得锁。
+2. synchronized不可响应中断，一个线程获取不到锁就一直等着；ReentrantLock可以响应中断。
+3. ReentrantLock可以实现公平锁机制，也就是哪个线程等待的时间最长（在源码中体现就是在等待队列中排第二）谁先执行获取锁
+4. synchronized 是从JVM层面使用的， 而 ReenTrantLock是从JDK层面使用的（核心操作Locksupport.park和unpark方法）。
+5. ReentrantLock可以实现选择通知（只会唤醒同一个Condition下的线程），而Synchronized可以理解成所有线程共用一个Condition。
+
+
+
+需要注意的是，**在jdk1.6之后性能已经不是synchronized和reentrantlock的区别**，而且虚拟机在未来的性能改进中会更偏向于原生的synchronized，所以还是提倡在synchronized能满足你的需求的情况下，优先考虑使用synchronized关键字来进行同步！优化后的synchronized和ReenTrantLock一样，在很多地方都是用到了CAS操作。
+
