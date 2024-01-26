@@ -1,4 +1,4 @@
-### 1. ArrayDeque介绍
+#### 1. ArrayDeque介绍
 
 1. 从 ArrayDeque 命名就能看出他的实现基于**可扩容动态数组**，每次队列满了就会进行扩容，除非扩容至 int 边界才会抛出异常
 2. **ArrayDeque 不允许元素为 null**
@@ -7,7 +7,7 @@
 
 
 
-### 2. ArrayDeque的结构
+#### 2. ArrayDeque的结构
 
 ArrayDeque的整体继承结构如下：
 
@@ -49,7 +49,7 @@ ArrayDeque的内部结构元素如下：
 
 
 
-### 3. ArrayDeque的常用方法
+#### 3. ArrayDeque的常用方法
 
 ![img](http://pcc.huitogo.club/bac373f510c77fc094888a5f3a95e473)
 
@@ -67,7 +67,7 @@ ArrayDeque的内部结构元素如下：
 
 
 
-### 4. 为什么说ArrayDeque是循环数组？
+#### 4. 为什么说ArrayDeque是循环数组？
 
 传统的非循环数组中，在尾部添加元素的时候如果添加元素下标等于数组长度那么就要进行扩容操作，但是，在ArrayDeque中是一个双端队列，我们操作ArrayDeque的物理逻辑如下：
 
@@ -111,7 +111,7 @@ ArrayDeque的内部结构元素如下：
 
 
 
-### 5. ArrayDeque什么时候扩容，是怎么扩容的？
+#### 5. ArrayDeque什么时候扩容，是怎么扩容的？
 
 在上面addLast的源码中，以及ArrayDeque双向循环列队的原理，我们知道随着出队入队不断操作，如果 tail 移动到 length-1 之后数组的第一个位置 0 处没有元素则需要将 tail 指向 0，依次循环，**当 tail 如果等于 head 时说明数组要满了，接下来需要进行数组扩容**
 
@@ -165,7 +165,7 @@ ArrayDeque的内部结构元素如下：
 
 
 
-### 6. ArrayDeque的初始数组容量怎么定义的？扩容大小为什么必须是2的幂次方？
+#### 6. ArrayDeque的初始数组容量怎么定义的？扩容大小为什么必须是2的幂次方？
 
 ArrayDeque的构造方法源码如下：
 
@@ -249,7 +249,7 @@ ArrayDeque的构造方法源码如下：
 
 
 
-### 7. ArrayDeque的增删改查源码？
+#### 7. ArrayDeque的增删改查源码？
 
 增的话主要看addLast和addFirst就可以了，addLast源码上面有，这里看一下addFirst的源码：
 
@@ -516,7 +516,7 @@ ArrayDeque的构造方法源码如下：
 
 
 
-### 8. ArrayDeque可以逆向遍历吗？
+#### 8. ArrayDeque可以逆向遍历吗？
 
 当然可以，ArrayDeque作为双向队列，有head和tail两个标识可以作为反向遍历的根本，源码如下：
 
@@ -592,7 +592,7 @@ ArrayDeque的构造方法源码如下：
 
 
 
-### 9. ArrayDeque是怎么计算队列长度的？
+#### 9. ArrayDeque是怎么计算队列长度的？
 
 当tail > head的时候比较好计算，但是在tail < head的时候，也就是物理上元素不连续的时候怎么计算？
 
@@ -610,7 +610,7 @@ ArrayDeque的构造方法源码如下：
 
 
 
-### 10. ArrayDeque怎么转换成数组的？
+#### 10. ArrayDeque怎么转换成数组的？
 
 从基本操作上，如果物理上不连续，先复制右侧，再补上左侧。
 
@@ -653,7 +653,7 @@ toArray的源码如下：
 
 
 
-### 11. 怎么看待ArrayDeque的存取和查询效率？
+#### 11. 怎么看待ArrayDeque的存取和查询效率？
 
 因为ArrayDeque底层维护的是一个数组，所以在查询方面效率高，在增删方面，在ArrayList中因为增删元素的话需要移动大量元素，所以效率比较低，但
 

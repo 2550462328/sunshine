@@ -1,4 +1,4 @@
-### 1. ReferenceQueue介绍
+#### 1. ReferenceQueue介绍
 
 **ReferenceQueue内部实现实际上是一个栈**
 
@@ -92,7 +92,7 @@
 
 
 
-### 2. 成员变量
+#### 2. 成员变量
 
 ```
 3.  static ReferenceQueue<Object> NULL = new Null<>();  
@@ -140,9 +140,9 @@ NULL对象
 
 
 
-### 3. 主要方法
+#### 3. 主要方法
 
-#### 3.1 入队
+##### 3.1 入队
 
 ```
 3.  // 这个方法仅会被Reference类调用  
@@ -196,7 +196,7 @@ NULL对象
 
 
 
-#### 3.2  出队
+##### 3.2  出队
 
 出队分两种，阻塞和非阻塞
 

@@ -1,6 +1,6 @@
 之前学习AtomInteger的时候我们知道对于原子类的底层操作都依赖于sun.misc.Unsafe类来实现，Unsafe调用的方法也就是JNI方法，即本地方法
 
-### 1. CPU中的lock
+#### 1. CPU中的lock
 
 讲Unsafe的原理之前先了解一下CPU和内存之间的交互关系，在多核心时代下，**多个核心通过同一条总线和内存以及其他硬件进行通信**
 
@@ -87,7 +87,7 @@ ADD, ADC, AND, BTC, BTR, BTS, CMPXCHG, CMPXCH8B, CMPXCHG16B, DEC, INC, NEG, NOT,
 
 
 
-### 2. Unsafe的源码
+#### 2. Unsafe的源码
 
 现在可以看一下Unsafe类的源码
 
@@ -184,7 +184,7 @@ Unsafe中对CAS的实现是C++写的，从上图可以看出最后调用的是At
 
 
 
-### 3. CAS中ABA的问题
+#### 3. CAS中ABA的问题
 
 CAS由三个步骤组成，分别是“读取->比较->写回”。考虑这样一种情况，线程1和线程2同时执行CAS 逻辑，两个线程的执行顺序如下：
 

@@ -1,7 +1,3 @@
-### java类命名技巧
-
-
-
 ![img](http://pcc.huitogo.club/a61ac4e68ab7f91a902c35ec4f047f42)
 
 

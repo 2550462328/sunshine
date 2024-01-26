@@ -1,4 +1,4 @@
-### 1. Disruptor组件
+#### 1. Disruptor组件
 
 先看一下Disruptor中重要组件之间的协作关系
 
@@ -60,7 +60,7 @@ Disruptor 定义的事件处理接口，由用户实现，用于处理事件，�
 
 
 
-### 2. 初始化
+#### 2. 初始化
 
 ```
 /**
@@ -276,7 +276,7 @@ private void fill(EventFactory<E> eventFactory)
 
 
 
-### 3. 配置消费者组
+#### 3. 配置消费者组
 
 RingBuffer初始化后，我们需要配置消费者组 - 实现EventHandler的消费者们，消息者也就是事件监听器
 
@@ -422,7 +422,7 @@ class ConsumerRepository<T> implements Iterable<ConsumerInfo>
 
 
 
-### 4. 写数据
+#### 4. 写数据
 
 现在我们看一下生产者是怎么输出数据的，前面我们已经知道RingBuffer中其实每个元素都已经被我们使用EventFactory初始化了Event，那么生产者要做的事就不是new一个Event，而是定位到可生产元素的有效位置然后 塞入事件消息
 
@@ -603,7 +603,7 @@ public void signalAllWhenBlocking()
 
 
 
-### 5. 读数据
+#### 5. 读数据
 
 读数据 我们回过头来看 配置消费者组的时候 消费者线程BatchEventProcessor的行为，首先看下消费者线程是怎么启动的
 
@@ -814,7 +814,7 @@ public boolean isAvailable(long sequence)
 
 
 
-### 6. 总结
+#### 6. 总结
 
 这里简单基于源码总结下 Distruptor高效的原因
 

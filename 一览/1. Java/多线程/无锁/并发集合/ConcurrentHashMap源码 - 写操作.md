@@ -139,7 +139,7 @@ putVal的源码如下：
 
 看完步骤再细看方法
 
-### 1.initTable()
+#### 1.initTable()
 
 初始化数组，保证单线程进行
 
@@ -207,7 +207,7 @@ putVal的源码如下：
 
 
 
-### 2. spread(key.hashCode())
+#### 2. spread(key.hashCode())
 
 计算key的hash散列值
 
@@ -223,7 +223,7 @@ putVal的源码如下：
 
 
 
-### 3. helpTransfer(Node<K, V>[] tab, Node<K, V> f)
+#### 3. helpTransfer(Node<K, V>[] tab, Node<K, V> f)
 
 多线程帮助扩容
 
@@ -341,7 +341,7 @@ B. sizeCtrl的低16位就是扩容的线程数 + 1，上面 + 2 表示此时有�
 
 
 
-### treeifyBin(Node<K, V>[] tab, int index)
+#### treeifyBin(Node<K, V>[] tab, int index)
 
 将tab扩容或者在index处的链表转红黑树
 

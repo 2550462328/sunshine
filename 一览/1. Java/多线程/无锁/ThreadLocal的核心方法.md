@@ -1,4 +1,4 @@
-### 1. set方法
+#### 1. set方法
 
 源码如下
 
@@ -22,7 +22,7 @@
 
 
 
-### 2. getMap()代码
+#### 2. getMap()代码
 
 ```
 1.  ThreadLocalMap getMap(Thread t) {  
@@ -85,7 +85,7 @@ ThreadLocal和Thread的关系如下图：
 
 
 
-### 3. get方法
+#### 3. get方法
 
 get方法源码如下
 
@@ -147,11 +147,11 @@ get方法源码如下
 
 
 
-### 4. ThreadLocalMap是什么？
+#### 4. ThreadLocalMap是什么？
 
 ThreadLocalMap从字面上就可以看出这是一个保存ThreadLocal对象的map(其实是以它为Key)
 
-#### 4.1 Entry
+##### 4.1 Entry
 
 跟所有Map集合一样，ThreadLocalMap维护的也是一个Entry数组，初始化大小为16
 
@@ -183,7 +183,7 @@ Entry代码如下：
 
 
 
-#### 4.2 构造函数
+##### 4.2 构造函数
 
 ThreadLocal的一个构造函数如下：
 

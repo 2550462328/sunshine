@@ -101,7 +101,7 @@ execute的过程可以分三步
 
 
 
-### 1. addWorker
+#### 1. addWorker
 
 这里注意一下上面三次addWorker的不同含义
 
@@ -272,7 +272,7 @@ addWorker中的**addWorkerFailed**方法
 
 
 
-### 2. tryTerminate
+#### 2. tryTerminate
 
 失败处理的逻辑也分三步，这里看一下**tryTerminate**的方法
 
@@ -340,7 +340,7 @@ addWorker中的**addWorkerFailed**方法
 
 
 
-### 3. runWorker
+#### 3. runWorker
 
 看完了addWorker中worker添加失败后的逻辑后，回头看一下在worker添加成功后发生了，也就是worker.run方法，实际调用的是**runWorker**方法，代码如下
 
@@ -425,7 +425,7 @@ worker线程执行自身任务以及从workerQueue中取出task去执行，直�
 
 
 
-### 4. getTask
+#### 4. getTask
 
 先看一下怎么从workerQueue中取出task，方法**getTask**代码如下
 
@@ -521,7 +521,7 @@ worker线程执行自身任务以及从workerQueue中取出task去执行，直�
 
 
 
-### 5. processWorkerExit
+#### 5. processWorkerExit
 
 讲完woker线程怎么从workQueue中取task之后，再回到runWorker中看一下woker执行完成或者失败后的收尾工作
 

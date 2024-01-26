@@ -16,15 +16,15 @@ Start GO！！！
 
 
 
-### 1、为什么会使用ConcurrentHashMap这个集合？
+#### 1、为什么会使用ConcurrentHashMap这个集合？
 
 因为传统的hashMap在多线程并发的情况是不安全的，所以使用了concurrentHashMap代替了多线程下的hashMap
 
 
 
-### 2、ConcurrentHashMap的成员常量
+#### 2、ConcurrentHashMap的成员常量
 
-#### 2.1 限制值（用于边界值等条件判断）
+##### 2.1 限制值（用于边界值等条件判断）
 
 ```
 2.  // map的最大容量  
@@ -84,7 +84,7 @@ Start GO！！！
 
 
 
-#### 2.2 Node节点的hash值相关
+##### 2.2 Node节点的hash值相关
 
 ```
 30. // 下面是一些特殊节点的hash值，正常节点hash在spread函数都会生成正数  
@@ -114,9 +114,9 @@ Start GO！！！
 
 
 
-### 3. ConcurrentHashMap的成员变量
+#### 3. ConcurrentHashMap的成员变量
 
-#### 3.1 跟多线程扩容相关
+##### 3.1 跟多线程扩容相关
 
 ```
 44. // 存放node节点的数组  
@@ -171,7 +171,7 @@ Start GO！！！
 
 
 
-#### 3.2 跟高效的并发计数方式有关
+##### 3.2 跟高效的并发计数方式有关
 
 ```
 68. // 下面三个主要与统计数目有关，可以参考jdk1.8新引入的java.util.concurrent.atomic.LongAdder的源码，帮助理解  
@@ -193,7 +193,7 @@ Start GO！！！
 
 
 
-### 4. concurrentHashMap的构造函数
+#### 4. concurrentHashMap的构造函数
 
 Jdk1.8的构造函数是不带loadFactor的，带loadFactor是为了向下兼容jdk1.7
 
@@ -225,13 +225,13 @@ Jdk1.8的构造函数是不带loadFactor的，带loadFactor是为了向下兼容
 
 
 
-### 5. concurrentHashMap的内部类
+#### 5. concurrentHashMap的内部类
 
 ![img](http://pcc.huitogo.club/6dfd2b8ff985c4540a44cea5c94da2c8)
 
 
 
-### 6. ConcurrentHashMap的cas方法
+#### 6. ConcurrentHashMap的cas方法
 
 ```
 3. // 用来返回节点数组的指定位置的节点的原子操作  

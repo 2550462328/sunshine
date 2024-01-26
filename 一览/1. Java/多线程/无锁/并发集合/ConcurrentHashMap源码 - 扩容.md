@@ -1,4 +1,4 @@
-### 1. tryPresize(int size)
+#### 1. tryPresize(int size)
 
 进行扩容（并非扩容的实际代码）
 
@@ -87,7 +87,7 @@
 
 
 
-### 2. transfer(Node<K, V>[] tab, Node<K, V>[] nextTab)
+#### 2. transfer(Node<K, V>[] tab, Node<K, V>[] nextTab)
 
 这个就是扩容的实质性代码了
 

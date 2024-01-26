@@ -2,8 +2,6 @@
 
 在jdk1.6之后对jvm中synchronized进行了优化工作，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销。就是说synchronized可能不是实实在在的重量锁了，在对应的场景根据并发竞争情况进行以下转变。
 
-
-
 ![img](http://pcc.huitogo.club/69c165be9b4f92e8ab76cc706af566df)
 
 

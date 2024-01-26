@@ -1,4 +1,4 @@
-### 1. TreeMap特性
+#### 1. TreeMap特性
 
 1. 键值不允许重复，键不能为null
 2. 默认会对键进行排序，所以键必须实现Comparable接口或者使用外部比较器
@@ -84,7 +84,7 @@
 
 
 
-### 2. TreeMap继承结构
+#### 2. TreeMap继承结构
 
 ![img](http://pcc.huitogo.club/3e765bb091a4fee36ee75b039c953b7d)
 
@@ -191,7 +191,7 @@ TreeMap的变量如下
 
 
 
-### 3. TreeMap是怎么实现排序的
+#### 3. TreeMap是怎么实现排序的
 
 关于排序想到的是Comparable接口和Comparator比较器，所以对于put进TreeMap的key值如果是自定义类的话需要：
 
@@ -248,13 +248,13 @@ TreeMap的变量如下
 
 
 
-### 4. TreeMap的主要方法
+#### 4. TreeMap的主要方法
 
 TreeMap底层维护的一个数据结构就是红黑树，知道这个就很好理解TreeMap在增删改查时需要考虑的问题了，其中最重要的就是红黑树的平衡了，使用变色和旋转进行解决，关于这部分代码跟HashMap中同出一辙，详细可以看HashMap红黑树的部分。
 
 
 
-#### 4.1 put
+##### 4.1 put
 
 ```
 1.  // 插入元素  
@@ -510,7 +510,7 @@ TreeMap底层维护的一个数据结构就是红黑树，知道这个就很好�
 
 
 
-#### 4.2 remove
+##### 4.2 remove
 
 ```
 1.  // 删除节点  
@@ -864,7 +864,7 @@ TreeMap底层维护的一个数据结构就是红黑树，知道这个就很好�
 
 
 
-#### 4.3 buildFromSorted
+##### 4.3 buildFromSorted
 
 这个方法可以将一个sortedMap转换成红黑树
 

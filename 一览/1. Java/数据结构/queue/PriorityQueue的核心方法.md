@@ -1,4 +1,4 @@
-### 1. PriorityQueue的数据结构
+#### 1. PriorityQueue的数据结构
 
 - **PriorityQueue的内部结构是按照小顶堆的结构进行存储的**
 - **PriorityQueue不允许有空元素**
@@ -49,13 +49,13 @@ PriorityQueue也是Queue的一个继承者，相比于一般的列表，它的�
 
 
 
-### 2. PriorityQueue的继承结构
+#### 2. PriorityQueue的继承结构
 
 ![img](http://pcc.huitogo.club/727c7543dfb2befe35d8114b8d516709)
 
 
 
-### 3. 内部成员
+#### 3. 内部成员
 
 ```
 3.  // 默认初始化容量  
@@ -105,7 +105,7 @@ PriorityQueue也是Queue的一个继承者，相比于一般的列表，它的�
 
 
 
-### 4. 构造函数
+#### 4. 构造函数
 
 1）使用指定容量创建一个优先级队列，并使用指定比较器进行排序
 
@@ -462,9 +462,9 @@ siftDown( 1,queue[1])不需要调整，跳过
 
 
 
-### 5. 主要方法源码
+#### 5. 主要方法源码
 
-#### 5.1 add
+##### 5.1 add
 
 ```
 34. public boolean add(E e) {  
@@ -558,7 +558,7 @@ siftDown( 1,queue[1])不需要调整，跳过
 
 
 
-#### 5.2 remove
+##### 5.2 remove
 
 删除元素分两种，一种是从顶部弹出元素，另一种是从数组中间删除元素
 
@@ -683,7 +683,7 @@ siftDown( 1,queue[1])不需要调整，跳过
 
 
 
-#### 5.3 indexof
+##### 5.3 indexof
 
 按元素查找下标：
 
@@ -721,7 +721,7 @@ siftDown( 1,queue[1])不需要调整，跳过
 
 
 
-### 6. PriorityQueue的应用场景
+#### 6. PriorityQueue的应用场景
 
 由于内部是用数组实现的小顶堆，所以堆适用的场景它都适用，比如典型的从n个元素中取出最小（最大）的前k个，这样的场景适用PriorityQueue就能以比较小的空间代价和还算ok的时间代价进行实现。
 

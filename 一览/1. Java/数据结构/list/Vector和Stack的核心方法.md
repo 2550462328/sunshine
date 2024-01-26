@@ -1,4 +1,4 @@
-### 1. Vector概述
+#### 1. Vector概述
 
 ![img](http://pcc.huitogo.club/3e809b5c8dd4930d0705e12ebf1a81e0)
 
@@ -16,15 +16,15 @@
 
 
 
-### 2. Vector构造方法
+#### 2. Vector构造方法
 
-#### 2.1 Vector() 
+##### 2.1 Vector() 
 
 空构造
 
 
 
-#### 2.2 Vector(int) 
+##### 2.2 Vector(int) 
 
 带初始大小的构造
 
@@ -38,7 +38,7 @@
 
 
 
-#### 2.3 Vector(int，int) 
+##### 2.3 Vector(int，int) 
 
 带初始大小和增长大小的构造
 
@@ -60,7 +60,7 @@
 
 
 
-#### 2.4 Vector(Collection<? extends E> c) 
+##### 2.4 Vector(Collection<? extends E> c) 
 
 带初始元素的构造
 
@@ -82,9 +82,9 @@
 
 
 
-### 3. Vector核心方法
+#### 3. Vector核心方法
 
-#### 3.1 add方法
+##### 3.1 add方法
 
 ```
 26. //在vector中的末尾追加元素，利用synchronized实现线程安全。  
@@ -186,7 +186,7 @@ grow(minCapacity)代码
 
 
 
-### 4. Stack概述
+#### 4. Stack概述
 
 ![img](http://pcc.huitogo.club/291b7b313658119043ff86a4f18fc20a)
 
@@ -196,9 +196,9 @@ grow(minCapacity)代码
 
 
 
-### 5. 总结Vector和Stack
+#### 5. 总结Vector和Stack
 
-#### 5.1 Vector总结
+##### 5.1 Vector总结
 
 1. Vector线程安全是因为它的方法都加了synchronized关键字
 2. Vector的本质是一个数组，特点能是能够自动扩增，扩增的方式跟capacityIncrement的值有关
@@ -206,7 +206,7 @@ grow(minCapacity)代码
 
 
 
-#### 5.2 Stack的总结
+##### 5.2 Stack的总结
 
 1. 对栈的一些操作，先进后出
 2. 底层也是用数组实现的，因为继承了Vector

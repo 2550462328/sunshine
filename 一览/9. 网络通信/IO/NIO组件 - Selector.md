@@ -1,14 +1,14 @@
-### 1. 为什么使用Selector？
+#### 1. 为什么使用Selector？
 
 只需要更少的线程来处理通道。事实上，可以只用一个线程处理所有的通道。对于操作系统来说，线程之间上下文切换的开销很大，而且每个线程都要占用系统的一些资源（如内存）。因此，使用的线程越少越好。
 
 
 
-### 2. Selector工作流程
+#### 2. Selector工作流程
 
 使用selector操作多个通道获取对应事件的过程如下：
 
-#### 2.1 创建selector
+##### 2.1 创建selector
 
 通过调用Selector.open()方法创建一个Selector，如下：
 
@@ -20,7 +20,7 @@ Selector selector = Selector.open();
 
 
 
-#### 2.2 注册通道
+##### 2.2 注册通道
 
 ```
 channel.configureBlocking(false);  
@@ -44,7 +44,7 @@ int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;
 
 
 
-#### 2.3 获取激活的通道个数
+##### 2.3 获取激活的通道个数
 
 ```
 int readyChannels = selector.select();
@@ -62,7 +62,7 @@ selectNow()，这是一种非阻塞的select，有一个激活的通道就会返
 
 
 
-#### 2.4 获取激活的通道
+##### 2.4 获取激活的通道
 
 ```
 // 获取激活的通道
@@ -76,13 +76,13 @@ Set selectedKeys = selector.selectedKeys();
 
 
 
-#### 2.5 关闭通道
+##### 2.5 关闭通道
 
 用完Selector后调用其close()方法会关闭该Selector，且使注册到该Selector上的所有SelectionKey实例无效。通道本身并不会关闭。
 
 
 
-### 3. Select的唤醒
+#### 3. Select的唤醒
 
 select是会阻塞线程的，直到有数据可处理，怎么提前唤醒它呢？
 
@@ -116,7 +116,7 @@ wakeup往管道或者连接写入一个字节，阻塞的select因为有I/O事�
 
 
 
-### 4. Selector使用实例
+#### 4. Selector使用实例
 
 关于Selector和Channel、Buffer的简单实例如下：
 

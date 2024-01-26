@@ -1,6 +1,6 @@
 下面是AtomicInteger的一些重要源码
 
-### 1. compareAndSet
+#### 1. compareAndSet
 
 这个方法是AtomicInteger的灵魂，几乎所有方法都是这个原理，都需要调用unSafe的compareAndSwapInt
 
@@ -42,7 +42,7 @@ Unsafe类的源码
 
 
 
-### 2. incrementAndGet
+#### 2. incrementAndGet
 
 将value + 1并且返回value +1
 
@@ -90,7 +90,7 @@ public native int   getIntVolatile(Object o, long offset);
 
 
 
-### 3. lazySet
+#### 3. lazySet
 
 延迟设置newValue，跟set(newValue)类似
 
@@ -120,7 +120,7 @@ public native void  putOrderedInt(Object o, long offset, int x);
 
 
 
-### 4. accumulateAndGet
+#### 4. accumulateAndGet
 
 这是jdk1.8引入函数式编程后引入的方法
 
@@ -162,7 +162,7 @@ AtomicInteger的源码
 
 
 
-### 5. updateAndGet
+#### 5. updateAndGet
 
 这是也是jdk1.8引入函数式编程后引入的方法
 

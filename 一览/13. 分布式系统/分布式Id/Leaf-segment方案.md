@@ -1,5 +1,3 @@
-**Leaf-segment方案**
-
 Leaf这个名字是来自德国哲学家、数学家莱布尼茨的一句话： >There are no two identical leaves in the world > “世界上没有两片相同的树叶”
 
 

@@ -1,4 +1,4 @@
-### 1. LinkedHashMap和HashMap
+#### 1. LinkedHashMap和HashMap
 
 linkedHashMap的继承关系如下图：
 
@@ -50,7 +50,7 @@ linkedHashMap的继承关系如下图：
 
 
 
-### 2. LinkedHashMap的插入和删除
+#### 2. LinkedHashMap的插入和删除
 
 在之前我们讨论一个集合进行增删的时候原理就是维护底层的数据结构，这里LinkedHashMap也会理所当然的想到维护那个Entry的双链表。
 
@@ -304,11 +304,11 @@ linkedHashMap的继承关系如下图：
 
 
 
-### 3. LinkedHashMap的内部类
+#### 3. LinkedHashMap的内部类
 
 内部类除了Entry外还有迭代器类，键、值以及键值对的集合类
 
-#### 3.1 LinkedHashIterator类
+##### 3.1 LinkedHashIterator类
 
 ```
 1.  abstract class LinkedHashIterator {  
@@ -378,13 +378,13 @@ linkedHashMap的继承关系如下图：
 
 
 
-#### 3.2  键、值以及键值对的集合类
+##### 3.2  键、值以及键值对的集合类
 
 三个集合视图类结构基本一致，跟HashMap中的对应集合视图其实基本是一毛一样的，只是在迭代器方法中返回各自的内部迭代器实例而已。其余逻辑基本一致。
 
 
 
-### 4. LinkedHashMap总结
+#### 4. LinkedHashMap总结
 
 在日常开发中，LinkedHashMap 的使用频率虽不及HashMap，但它也是不可或缺的重要实现。在 Java集合框架中，**HashMap**、**LinkedHashMap** 和 **TreeMap**三个映射类基于不同的数据结构，并实现了不同的功能。
 

@@ -1,6 +1,6 @@
-### 1. 什么是Token
+#### 1. 什么是Token
 
-#### 1.1 Accesss Token
+##### 1.1 Accesss Token
 
 **访问资源接口（API）时所需要的资源凭证**
 
@@ -51,7 +51,7 @@
 
 
 
-#### 1.2 Refresh Token
+##### 1.2 Refresh Token
 
 refresh token 是专用于**续签** access token 的 token。如果没有 refresh token，也可以刷新 access token，但每次刷新都要用户输入登录用户名与密码，会很麻烦。有了 refresh token，可以减少这个麻烦，客户端直接用 refresh token 去更新 access token，无需用户进行额外的操作。
 
@@ -69,7 +69,7 @@ Refresh Token 及过期时间是存储在服务器的数据库中，只有在申
 
 
 
-### 2. Token和 Session的区别
+#### 2. Token和 Session的区别
 
 1）Session 是一种**记录服务器和客户端会话状态的机制，使服务端有状态化，可以记录会话信息**。而 Token 是令牌，**访问资源接口（API）时所需要的资源凭证。Token使服务端无状态化，不会存储会话信息。**
 
@@ -87,7 +87,7 @@ Refresh Token 及过期时间是存储在服务器的数据库中，只有在申
 
 
 
-### 3. 什么是 JWT
+#### 3. 什么是 JWT
 
 **JSON Web Token（简称 JWT）是目前最流行的跨域认证解决方案。**
 
@@ -130,7 +130,7 @@ Refresh Token 及过期时间是存储在服务器的数据库中，只有在申
 
 
 
-### 4. Token和 JWT的区别
+#### 4. Token和 JWT的区别
 
 **相同：**
 
@@ -152,7 +152,7 @@ JWT：将 Token 和 Payload 加密后存储于客户端，服务端只需要使�
 
 
 
-### 5. 使用Token需要考虑的问题
+#### 5. 使用Token需要考虑的问题
 
 1. 如果你认为**用数据库来存储token** 会导致查询时间太长，可以选择放在内存当中。比如 redis 很适合你对 token 查询的需求。
 
@@ -203,7 +203,7 @@ JWT：将 Token 和 Payload 加密后存储于客户端，服务端只需要使�
 
 
 
-### 6. 使用 JWT时需要考虑的问题
+#### 6. 使用 JWT时需要考虑的问题
 
 1. 因为 JWT 并不依赖 Cookie 的，所以你可以使用任何域名提供你的 API 服务而不需要担心跨域资源共享问题（CORS）
 
@@ -224,7 +224,7 @@ JWT：将 Token 和 Payload 加密后存储于客户端，服务端只需要使�
 
 
 
-### 7. Token和JWT的安全问题
+#### 7. Token和JWT的安全问题
 
 基于Session和cookie保存用户状态并借此验证用户会带来CSRF问题
 

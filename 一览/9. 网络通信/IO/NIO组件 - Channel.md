@@ -8,7 +8,7 @@ Channel类似流，但是有所不同，如下：
 
 
 
-### 1. FileChannel
+#### 1. FileChannel
 
 我们无法直接打开一个FileChannel，需要通过使用一个InputStream、OutputStream或RandomAccessFile来获取一个FileChannel实例。
 
@@ -102,7 +102,7 @@ FileChannel的常用方法
 
 
 
-### 2. DatagramChannel
+#### 2. DatagramChannel
 
 能通过UDP读写网络中的数据。因为UDP是无连接的网络协议，所以不能像其它通道那样循环读取和写入。它发送和接收的是数据包。
 
@@ -140,7 +140,7 @@ UDP在数据传送方面没有任何保证，不会通知你发出的数据包�
 
 
 
-### 3. SocketChannel（TCP客户端）
+#### 3. SocketChannel（TCP客户端）
 
 能通过UDP读写网络中的数据。
 
@@ -220,7 +220,7 @@ UDP在数据传送方面没有任何保证，不会通知你发出的数据包�
 
 
 
-### 4. ServerSocketChannel（TCP服务端）
+#### 4. ServerSocketChannel（TCP服务端）
 
 可以监听新进来的TCP连接，像Web服务器那样。对每一个新进来的连接都会创建一个SocketChannel。
 

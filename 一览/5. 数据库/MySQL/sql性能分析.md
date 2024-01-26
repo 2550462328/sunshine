@@ -1,4 +1,103 @@
-**通过 explain sql语句 分析查询语句**
+#### 1. SQL执行频率统计
+
+MySQL 客户端连接成功后，通过 show [session|global] status 命令可以提供服务器状态信息。通过如下指令，可以查看当前数据库的INSERT、UPDATE、DELETE、SELECT的访问频次：
+
+```
+-- session 是查看当前会话 ; 
+-- global 是查询全局数据 ; 
+SHOW GLOBAL STATUS LIKE 'Com_______';
+```
+
+![](https://pcc.huitogo.club/mysql8.png)
+
+
+
+通过上述指令，我们可以查看到当前数据库到底是以查询为主，还是以增删改为主，从而为数据库优化提供参考依据。 如果是以增删改为主，我们可以考虑不对其进行索引的优化。 如果是以查询为主，那么就要考虑对数据库的索引进行优化了。
+
+
+
+#### 2. 慢查询日志
+
+那假如说是以查询为主，我们又该如何定位针对于那些查询语句进行优化呢？ 次数我们可以借助于慢查询日志。
+
+慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。
+
+
+
+MySQL的慢查询日志默认没有开启，我们可以查看一下系统变量 slow_query_log
+
+```
+ show variables like 'slow_query_log';
+```
+
+
+
+如果要开启慢查询日志，需要在MySQL的配置文件（如果是linux则是/etc/my.cnf，如果是windows在mysql安装目录下的my.ini）中配置：
+
+```
+ft_min_word_len=1
+#慢查询日志存放路径地址
+log-slow-queries = D:\slow.log    
+#慢查询记录的时间
+long_query_time = 2
+```
+
+
+
+那这样，**通过慢查询日志，就可以定位出执行效率比较低的SQ**L，从而有针对性的进行优化。
+
+
+
+#### 3. profile详情
+
+show profiles 能够在做SQL优化时帮助我们了解时间都耗费到哪里去了。通过have_profiling参数，能够看到当前MySQL是否支持profile操作
+
+```
+# 查询是否支持profile
+SELECT @@have_profiling
+# 查询profile状态
+SELECT @@profiling
+# 开启profile
+SET profiling = 1;
+```
+
+注意：profile查询出来的数据每个客户端是相互隔离的。
+
+
+
+开关已经打开了，接下来，我们所执行的SQL语句，都会被MySQL记录，并记录执行时间消耗到哪儿去了。 
+我们直接执行如下的SQL语句：
+
+```
+select * from tb_user; 
+select * from tb_user where id = 1; 
+select * from tb_user where name = '白起'; 
+select count(*) from t_user;
+```
+
+
+
+执行一系列的业务SQL的操作，然后通过如下指令查看指令的执行耗时：
+
+- 查看每一条SQL的耗时基本情况：show profiles;
+- 查看指定query_id的SQL语句各个阶段的耗时情况：show profile for query query_id;
+- 查看指定query_id的SQL语句CPU的使用情况：show profile cpu for query query_id;
+
+
+
+**查看每一条SQL的耗时情况:**
+
+![](https://pcc.huitogo.club/mysql9.png)
+
+
+
+**查看指定SQL各个阶段的耗时情况 :**
+
+![](https://pcc.huitogo.club/mysql10.png)
+
+
+
+#### 4.  explain sql
 
 可以通过explain sql语句来了解当前语句的缺陷来进一步进行调优
 
