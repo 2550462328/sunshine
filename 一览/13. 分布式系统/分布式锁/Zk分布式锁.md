@@ -2,7 +2,7 @@ ZooKeeper是以Paxos算法为基础分布式应用程序协调服务。Zk的数�
 
 ![img](http://pcc.huitogo.club/28c8043ed0af769c1c4503a416707c71)
 
-/lock是我们用于加锁的目录,/resource_name是我们锁定的资源，其下面的节点按照我们加锁的顺序排列。
+/lock是我们用于加锁的目录，/resource_name是我们锁定的资源，其下面的节点按照我们加锁的顺序排列。
 
 
 #### 1. 使用ZK分布式锁有两种思路

@@ -17,8 +17,6 @@ AbstractAutoProxyCreator
 
 
 
-
-
 #### 2. 获取Adivsor
 
 ```
@@ -280,8 +278,6 @@ DynamicDataSourceAnnotationInterceptor.invoke()
              YmlDynamicDataSourceProvider. loadDataSources() 从yaml文件中加载数据源
         DynamicDataSourceProvider. addDataSource()
 ```
-
-
 
 
 
