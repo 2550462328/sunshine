@@ -36,8 +36,6 @@ monitor依赖操作系统的 MutexLock( 互斥锁 来实现的 线程被阻塞�
 
 ![img](http://pcc.huitogo.club/d2e9b8d83a0343ca7d4403ac4361a843)
 
-
-
 #### 2. synchronized同步方法
 
 ```

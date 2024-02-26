@@ -1,4 +1,4 @@
-#### 1. spi 是啥？
+#### 1. SPI 是啥？
 
 spi，简单来说，就是 `service provider interface` ，说白了是什么意思呢，比如你有个接口，现在这个接口有 3 个实现类，那么在系统运行的时候对这个接口到底选择哪个实现类呢？这就需要 spi 了，需要**根据指定的配置**或者是**默认的配置**，去**找到对应的实现类**加载进来，然后用这个实现类的实例对象。
 
@@ -10,7 +10,7 @@ spi 机制一般用在哪儿？**插件扩展的场景**，比如说你开发了
 
 
 
-#### 2. Java spi 思想的体现
+#### 2. Java SPI 思想的体现
 
 spi 经典的思想体现，大家平时都在用，比如说 jdbc。
 
@@ -22,7 +22,7 @@ Java 定义了一套 jdbc 的接口，但是 Java 并没有提供 jdbc 的实现
 
 
 
-#### 3. dubbo 的 spi 思想
+#### 3. Dubbo的 SPI 思想
 
 dubbo 也用了 spi 思想，不过没有用 jdk 的 spi 机制，是自己实现的一套 spi 机制。
 
@@ -67,7 +67,7 @@ hessian=com.alibaba.dubbo.rpc.protocol.hessian.HessianProtocol
 
 
 
-#### 4. 如何扩展 dubbo 中的组件
+#### 4. 如何扩展 Dubbo 中的组件
 
 自己写个工程，要是那种可以打成 jar 包的，里面的 `src/main/resources` 目录下，搞一个 `META-INF/services` ，里面放个文件叫： `com.alibaba.dubbo.rpc.Protocol` ，文件里搞一个 `my=com.bingo.MyProtocol` 。自己把 jar 弄到 nexus 私服里去。
 
