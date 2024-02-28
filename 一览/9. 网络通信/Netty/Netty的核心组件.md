@@ -4,8 +4,6 @@
 
 
 
-
-
 核心组件的高层类图：
 
 ![高层类图](http://static.iocoder.cn/images/Netty/2018_03_05/01.png)

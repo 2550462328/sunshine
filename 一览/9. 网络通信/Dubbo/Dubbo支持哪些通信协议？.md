@@ -1,6 +1,6 @@
-**Dubbo 支持的通信协议**
+#### 1. Dubbo 支持的通信协议
 
-- dubbo 协议 `dubbo://`
+- **dubbo 协议** `dubbo://`
 
 **默认**就是走 dubbo 协议，单一长连接，进行的是 NIO 异步通信，基于 hessian 作为序列化协议。使用的场景是：传输数据量小（每次请求在 100kb 以内），但是并发量很高，以及服务消费者机器数远大于服务提供者机器数的情况。
 
@@ -13,6 +13,10 @@
 而短连接，每次要发送请求之前，需要先重新建立一次连接。
 
 ![dubbo-not-keep-connection](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/dubbo-not-keep-connection.png)
+
+- **rest 协议** `rest://`
+
+基于标准的 Java REST API——JAX-RS 2.0（Java API for RESTful Web Services 的简写）实现的 REST 调用支持。
 
 - rmi 协议 `rmi://`
 
@@ -42,23 +46,19 @@ Hessian 1 协议用于集成 Hessian 的服务，Hessian 底层采用 Http 通�
 
 基于 Redis 实现的 RPC 协议。
 
-- rest 协议 `rest://`
-
-基于标准的 Java REST API——JAX-RS 2.0（Java API for RESTful Web Services 的简写）实现的 REST 调用支持。
-
 - gPRC 协议 `grpc://`
 
 Dubbo 自 2.7.5 版本开始支持 gRPC 协议，对于计划使用 HTTP/2 通信，或者想利用 gRPC 带来的 Stream、反压、Reactive 编程等能力的开发者来说， 都可以考虑启用 gRPC 协议。
 
 
 
-**Dubbo 支持的序列化协议**
+#### 2. Dubbo 支持的序列化协议
 
 dubbo 支持 hession、Java 二进制序列化、json、SOAP 文本序列化多种序列化协议。但是 hessian 是其默认的序列化协议。
 
 
 
- **Hessian序列化的数据结构**
+####  3. Hessian序列化的数据结构
 
 Hessian 的对象序列化机制有 8 种原始类型：
 
@@ -83,14 +83,16 @@ Hessian 的对象序列化机制有 8 种原始类型：
 
 
 
-**Q1：为什么PB序列化的效率最高？**
+#### 4. 答疑
+
+***Q1：为什么PB序列化的效率最高？***
 
 - 它使用 proto 编译器，自动进行序列化和反序列化，速度非常快，应该比 `XML` 和 `JSON` 快上了 `20~100` 倍；
 - 它的数据压缩效果好，就是说它序列化后的数据量体积小。因为体积小，传输起来带宽和速度上会有优化。
 
 
 
-**Q2：为什么Dubbo不默认使用PB序列化？**
+***Q2：为什么Dubbo不默认使用PB序列化？***
 
 1. Dubbo 的设计初衷是为了支持**跨语言**的远程调用，而 PB 是由 Google 开发的一种语言无关、平台无关的序列化协议。尽管 PB 支持多种语言的实现，但并不是所有语言都能完全兼容 PB 的特性。**Dubbo 选择了更通用并且支持更广泛的序列化方式**，如 Java 自带的序列化、JSON 和 Hessian 等。
 2. PB 是一种二进制序列化协议，相比于文本格式的序列化方式，PB 的序列化结果更为紧凑，网络传输效率更高。然而，PB 的二进制格式对人类**不友好，可读性较差**，不易调试和排查问题。Dubbo 更注重开发者的易用性和可调试性，因此选择了更易读的序列化方式。

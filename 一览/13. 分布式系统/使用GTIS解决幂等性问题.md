@@ -46,6 +46,4 @@ GTIS的内部实现流程为：
 7. 若该次操作成功，GTIS根据key取出value值，跟传入的返回结果进行比对，如果两者相等，则将该全局ID的过期时间改为较长时间；
 8. GTIS返回最终结果
 
-
-
 ![img](http://pcc.huitogo.club/5c415b85c24fb32d8af73c6873eefa61)

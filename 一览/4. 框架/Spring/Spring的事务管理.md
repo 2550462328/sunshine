@@ -48,6 +48,18 @@ PlatformTransactionManager接口中定义了三个方法：
 8. } 
 ```
 
+- PlatformTransactionManager 是负责事务管理的接口，一共有三个接口方法，分别负责事务的获得、提交、回滚。
+- #getTransaction(TransactionDefinition definition)方法，根据事务定义 TransactionDefinition ，获得 TransactionStatus 。
+  - 为什么不是创建事务呢？因为如果当前如果已经有事务，则不会进行创建，一般来说会跟当前线程进行绑定。如果不存在事务，则进行创建。
+  - 为什么返回的是 TransactionStatus 对象？在 TransactionStatus 中，不仅仅包含事务属性，还包含事务的其它信息，例如是否只读、是否为新创建的事务等等。
+  - 事务 TransactionDefinition 是什么？下面，也会详细解析 TransactionStatus 。
+- #commit(TransactionStatus status)方法，根据 TransactionStatus 情况，提交事务。
+  - 为什么根据 TransactionStatus 情况，进行提交？例如说，带@Transactional注解的的 A 方法，会调用 @Transactional注解的的 B 方法。
+    - 在 B 方法结束调用后，会执行 `PlatformTransactionManager#commit(TransactionStatus status)` 方法，此处事务**是不能**、**也不会**提交的。
+    - 而是在 A 方法结束调用后，执行 `PlatformTransactionManager#commit(TransactionStatus status)` 方法，提交事务。
+- #rollback(TransactionStatus status)方法，根据 TransactionStatus 情况，回滚事务。
+  - 为什么根据 TransactionStatus 情况，进行回滚？原因同 `#commit(TransactionStatus status)` 方法。
+
 
 
 ##### 1.2 TransactionDefinition
