@@ -67,8 +67,6 @@ sqlElement(context.evalNodes("/mapper/sql"));
 buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
 ```
 
-
-
 - <parameterMap>标签会被解析为 ParameterMap 对象，其每个子元素会被解析为 ParameterMapping 对象。
 
 - <resultMap>标签会被解析为 ResultMap 对象，其每个子元素会被解析为 ResultMapping 对象。
@@ -135,8 +133,6 @@ mybatis 最终执行的sql字符串就是由SqlSource提供的，而mybatis是�
 
 
 
-
-
 #### 2. 怎么执行的？
 
 这里先说一点 ，mybatis 不具备执行sql 语句的能力，它只是对接 Jbdc规范（Connection、Statement、Transaction、ResultSet），然后 由各数据库产商去实现Jdbc 规范，所以mybatis 的目标是 包装成 Jdbc的规范
@@ -157,7 +153,19 @@ try {
 
 
 
-这里再回顾一下mybatis 的三个组件的执行规则
+这里我们先回顾下MyBatis 编程步骤：
+
+1. 创建 SqlSessionFactory 对象。
+2. 通过 SqlSessionFactory 获取 SqlSession 对象。
+3. 通过 SqlSession 获得 Mapper 代理对象。
+4. 通过 Mapper 代理对象，执行数据库操作。
+5. 执行成功，则使用 SqlSession 提交事务。
+6. 执行失败，则使用 SqlSession 回滚事务。
+7. 最终，关闭会话。
+
+
+
+再从源码看一下mybatis 的三个组件的执行规则
 
 ```
 SqlSessionFactoryBuilder  --合成-  Configuration ---解析- mybatis.config 
@@ -189,9 +197,9 @@ SqlSession（执行sql 语句  ）
 
 ##### 2.1 Executor（语句执行器）
 
-- SimpleExecutor：每执行一次 update 或 select，就开启一个 Statement 对象，用完立刻关闭 Statement 对象。
+- **SimpleExecutor**：每执行一次 update 或 select，就开启一个 Statement 对象，用完立刻关闭 Statement 对象。
 
-- ReuseExecutor：执行 update 或 select，以 sql 作为 key 查找 Statement 对象，存在就使用，不存在就创建，用完后，不关闭 Statement 对象，而是放置于 Map<String, Statement>内，供下一次使用。简言之，就是重复使用 Statement 对象。
+- **ReuseExecutor**：执行 update 或 select，以 sql 作为 key 查找 Statement 对象，存在就使用，不存在就创建，用完后，不关闭 Statement 对象，而是放置于 Map<String, Statement>内，供下一次使用。简言之，就是重复使用 Statement 对象。
 
 
 ```
@@ -207,7 +215,7 @@ if (hasStatementFor(sql)) {
 }
 ```
 
-- BatchExecutor：执行 update（没有 select，JDBC 批处理不支持 select），将所有 sql 都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个 Statement 对象，每个 Statement 对象都是 addBatch()完毕后，等待逐一执行 executeBatch()批处理。与 JDBC 批处理相同。
+- **BatchExecutor**：执行 update（没有 select，JDBC 批处理不支持 select），将所有 sql 都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个 Statement 对象，每个 Statement 对象都是 addBatch()完毕后，等待逐一执行 executeBatch()批处理。**实际上，整个过程与 JDBC 批处理是相同**。
 
 
 ```
@@ -218,6 +226,12 @@ currentStatement = ms;
 statementList.add(stmt);
 batchResultList.add(new BatchResult(ms, sql, parameterObject));
 ```
+
+- **CachingExecutor** ：在上述的三个执行器之上，增加**二级缓存**的功能。
+
+> 通过设置 `<setting name="defaultExecutorType" value="">` 的 `"value"` 属性，可传入 SIMPLE、REUSE、BATCH 三个值，分别使用 SimpleExecutor、ReuseExecutor、BatchExecutor 执行器。
+>
+> 通过设置 `<setting name="cacheEnabled" value=""` 的 `"value"` 属性为 `true` 时，创建 CachingExecutor 执行器。
 
 
 
@@ -348,8 +362,6 @@ public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement m
 
 
 
-
-
 #### 3. Spring中怎么运行的
 
 **MapperProxy** 和 **MapperProxyFactory**
@@ -361,7 +373,7 @@ public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement m
 ![img](http://pcc.huitogo.club/8509fea79dfaae019bdfc9bc2a890526)
 
 ```
-MapperScanConfigurer.postProcessBeanDefinitionRegistry   spring的BeanPostProcessor
+MapperScanConfigurer.postProcessBeanDefinitionRegistry     #spring的BeanPostProcessor
 
 	ClassPathBeanDefinitionScanner.scan
 	
@@ -411,6 +423,10 @@ public T newInstance(SqlSession sqlSession) {
 ```
 
 
+
+最终执行流程图如下：
+
+![流程](http://static.iocoder.cn/images/MyBatis/2020_03_15/02.png)
 
 
 

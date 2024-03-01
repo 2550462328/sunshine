@@ -8,40 +8,93 @@ Spring MVC 的简单原理图如下：
 
 ![img](http://pcc.huitogo.club/f54fa4c7d2f3bc2ec085d45b38f4f29c)
 
+其中关键几个步骤有：
+
+ **1）发送请求**
+
+用户向服务器发送 HTTP 请求，请求被 Spring MVC 的调度控制器 DispatcherServlet 捕获。
+
+**2）映射处理器**
+
+DispatcherServlet 根据请求 URL ，调用 HandlerMapping 获得该 Handler 配置的所有相关的对象（包括 **Handler** 对象以及 Handler 对象对应的**拦截器**），最后以 HandlerExecutionChain 对象的形式返回。
+
+- 即 HandlerExecutionChain 中，包含对应的 **Handler** 对象和**拦截器**们。
+
+> 此处，对应的方法如下：
+>
+> ```
+> > // HandlerMapping.java
+> > 
+> > @Nullable
+> > HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception;
+> >
+> ```
+
+**3）处理器适配**
+
+DispatcherServlet 根据获得的 Handler，选择一个合适的HandlerAdapter 。（附注：如果成功获得 HandlerAdapter 后，此时将开始执行拦截器的 `#preHandler(...)` 方法）。
+
+提取请求 Request 中的模型数据，填充 Handler 入参，开始执行Handler（Controller)。 在填充Handler的入参过程中，根据你的配置，Spring 将帮你做一些额外的工作：
+
+- HttpMessageConverter ：会将请求消息（如 JSON、XML 等数据）转换成一个对象。
+- 数据转换：对请求消息进行数据转换。如 String 转换成 Integer、Double 等。
+- 数据格式化：对请求消息进行数据格式化。如将字符串转换成格式化数字或格式化日期等。
+- 数据验证： 验证数据的有效性（长度、格式等），验证结果存储到 BindingResult 或 Error 中。
+
+Handler(Controller) 执行完成后，向 DispatcherServlet 返回一个 ModelAndView 对象。
+
+> 此处，对应的方法如下：
+>
+> ```
+> > // HandlerAdapter.java
+> > 
+> > @Nullable
+> > ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;
+> >
+> ```
+
+ **4）解析视图**
+
+根据返回的 ModelAndView ，选择一个适合的 ViewResolver（必须是已经注册到 Spring 容器中的 ViewResolver)，解析出 View 对象，然后返回给 DispatcherServlet。
+
+> 此处，对应的方法如下：
+>
+> ```
+> > // ViewResolver.java
+> > 
+> > @Nullable
+> > View resolveViewName(String viewName, Locale locale) throws Exception;
+> >
+> ```
+
+**5）渲染视图** + **响应请求**
+
+ViewResolver 结合 Model 和 View，来渲染视图，并写回给用户( 浏览器 )。
+
+> 此处，对应的方法如下：
+>
+> ```
+> > // View.java
+> > 
+> > void render(@Nullable Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception;
+> >
+> ```
 
 
-流程说明：
 
-1. 用户发送请求至前端控制器DispatcherServlet。
-2. DispatcherServlet收到请求调用HandlerMapping处理器映射器。
-3. 处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器对象及处理器 拦截器(如果有则生成)一并返回给DispatcherServlet。
-4. DispatcherServlet调用HandlerAdapter处理器适配器。
-5. HandlerAdapter经过适配调用具体的处理器(Controller，也叫后端控制器)。
-6. Controller执行完成返回ModelAndView。
-7. HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet。
-8. DispatcherServlet将ModelAndView传给ViewReslover视图解析器。
-9. ViewReslover解析后返回具体View。
-10. DispatcherServlet根据View进行渲染视图（即将模型数据填充至视图中）。
-11. DispatcherServlet响应用户。
+***Q1：我们生产环境使用SpringMVC流程真的是这样吗？***
+
+既然这么问，答案当然不是。对于目前主流的架构，前后端已经进行分离了，所以 Spring MVC 只负责 **M**odel 和 **C**ontroller 两块，而将 **V**iew 移交给了前端。所以，在上图中的步骤 ⑤ 和 ⑥ 两步，已经不在需要。
+
+那么变成什么样了呢？在步骤 ③ 中，如果 Handler(Controller) 执行完后，如果判断方法有 `@ResponseBody` 注解，则直接将结果写回给用户( 浏览器 )。
+
+但是 HTTP 是不支持返回 Java POJO 对象的，所以需要将结果使用 HttpMessageConverter进行转换后，才能返回。例如说，大家所熟悉的 FastJsonHttpMessageConverter，将 POJO 转换成 JSON 字符串返回，Spring MVC 默认使用 MappingJackson2HttpMessageConverter解析转换。
 
 
 
-**从SpringMVC的核心组件交互来看流程就是**
+再来补充一些SpringMVC的工作流程图
 
-1. 首先用户发送请求——>**DispatcherServlet**，前端控制器收到 请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控 制；
-2. DispatcherServlet——>**HandlerMapping**， HandlerMapping 将会把请求映射为 HandlerExecutionChain 对象（包含一个Handler 处理器（页面控制器）对象、多个 HandlerInterceptor 拦截器）对象，通过这种策略模式，很容易添加新的映射策略；
-3. DispatcherServlet——>**HandlerAdapter**，HandlerAdapter 将会把处理器包装为适配器，从而支 持多种类型的处理器，即适配器设计模式的应用，从而很容易支持很多类型的处理器；
-4. HandlerAdapter——>处理器功能处理方法的调用，HandlerAdapter 将会根据适配的结果调用真 正的处理器的功能处理方法，完成功能处理；并返回一个**ModelAndView** 对象（包含模型数据、逻辑视图名）；
-5. ModelAndView的逻辑视图名——>**ViewResolver**， ViewResolver 将把逻辑视图 名解析为具体的View，通过这种策略模式，很容易更换其他视图技术；
-6. View——>渲染，**View** 会根据传进来的Model模型数据进行渲染，此处的Model实际是一个Map数据结构，因此很容易支 持其他视图技术；
-7. 返回控制权给DispatcherServlet，由DispatcherServlet返回响应给用户，到此一个流程结束。
+![流程示意图](http://static.iocoder.cn/images/Spring/2022-02-21/01.png)
 
 
 
-**简而言之**
-
-1. 前端控制器（DispatcherServlet）：接收请求，响应结果，相当于电脑的CPU。
-2. 处理器映射器（HandlerMapping）：根据URL去查找处理器。
-3. 处理器（Handler）：需要程序员去写代码处理逻辑的。
-4. 处理器适配器（HandlerAdapter）：会把处理器包装成适配器，这样就可以支持多种类型的处理 器，类比笔记本的适配器（适配器模式的应用）。
-5. 视图解析器（ViewResovler）：进行视图解析，多返回的字符串，进行处理，可以解析成对应的页 面。

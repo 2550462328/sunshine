@@ -1,4 +1,8 @@
-![img](http://pcc.huitogo.club/af4ae4570269a970415d40d8834ba97f)
+![Zuul 原理](http://static.iocoder.cn/20944a735d250d7d3338fe9deea179f8)
+
+
+
+其中Filter的分类有：
 
 1. PRE Filter : PRE Filter 在请求被路由之前调用 。 一般用于实现身份验证、资源 审查、记录调试信息等。
 2. ROUTING Filter：ROUTING Filter 将请求路由 到微服务实例，该 Filter 用于构 建发送给微服务实例的请求 ， 并使用 Apache HTTPClient 或 Netflix Ribbon 请求微服务实 例 。

@@ -440,7 +440,7 @@ public void afterPropertiesSet() {
 }
 ```
 
-- 执行 `refresh()` 方法，该方法在 AbstractApplicationContext 中执行，执行整个 Spring 容器的初始化过程。**该方法将在下篇文章进行详细分析说明**。
+- 执行 `refresh()` 方法，该方法在 AbstractApplicationContext 中执行，执行整个 Spring 容器的初始化过程。
 
 
 

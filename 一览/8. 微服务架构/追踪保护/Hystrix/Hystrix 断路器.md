@@ -3,15 +3,16 @@ Hystrix 断路器有三种状态，分别是关闭（Closed）、打开（Open�
 
 ![image-20191104211642271](https://doocs.gitee.io/advanced-java/docs/high-availability/images/hystrix-circuit-breaker-state-machine.png)
 
-1. `Closed` 断路器关闭：调用下游的请求正常通过
-2. `Open` 断路器打开：阻断对下游服务的调用，直接走 Fallback 逻辑
-3. `Half-Open` 断路器处于半开状态：SleepWindowInMilliseconds内
+- 初始时，断路器处于`CLOSED`状态，链路处于健康状态。当满足如下条件，断路器从`CLOSED`变成`OPEN`状态：
+  - **周期**( 可配，`HystrixCommandProperties.default_metricsRollingStatisticalWindow = 10000 ms` )内，总请求数超过一定**量**( 可配，`HystrixCommandProperties.circuitBreakerRequestVolumeThreshold = 20` ) 。
+  - **错误**请求占总请求数超过一定**比例**( 可配，`HystrixCommandProperties.circuitBreakerErrorThresholdPercentage = 50%` ) 。
+- 断路器处于 `OPEN` 状态，命令执行时，若当前时间超过断路器**开启**时间一定时间( `HystrixCommandProperties.circuitBreakerSleepWindowInMilliseconds = 5000 ms` )，断路器变成 `HALF_OPEN` 状态，**尝试**调用**正常**逻辑，根据执行是否成功，**打开或关闭**熔断器【**蓝线**】。
 
 
 
-#### 1. 断路器配置
+#### 1. 断路器配置说明
 
-**Enabled**
+- **Enabled**
 
 ```java
 HystrixCommandProperties.Setter()
@@ -22,7 +23,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**circuitBreaker.requestVolumeThreshold**
+- **circuitBreaker.requestVolumeThreshold**
 
 ```java
 HystrixCommandProperties.Setter()
@@ -33,7 +34,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**circuitBreaker.errorThresholdPercentage**
+- **circuitBreaker.errorThresholdPercentage**
 
 ```java
 HystrixCommandProperties.Setter()
@@ -44,7 +45,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**circuitBreaker.sleepWindowInMilliseconds**
+- **circuitBreaker.sleepWindowInMilliseconds**
 
 ```java
 HystrixCommandProperties.Setter()
@@ -57,7 +58,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**ForceOpen**
+- **ForceOpen**
 
 ```java
 HystrixCommandProperties.Setter()
@@ -68,7 +69,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**ForceClosed**
+- **ForceClosed**
 
 ```java
 HystrixCommandProperties.Setter()
@@ -79,7 +80,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**TimeoutEnabled**
+- **TimeoutEnabled**
 
 这个参数用于控制是否要打开 timeout 机制，默认值是 true。
 
@@ -90,7 +91,7 @@ HystrixCommandProperties.Setter()
 
 
 
-**TimeoutMilliseconds**
+- **TimeoutMilliseconds**
 
 在 Hystrix 中，我们可以手动设置 timeout 时长，如果一个 command 运行时间超过了设定的时长，那么就被认为是 timeout，然后 Hystrix command 标识为 timeout，同时执行 fallback 降级逻辑。
 
@@ -98,7 +99,7 @@ HystrixCommandProperties.Setter()
 
 ```java
 HystrixCommandProperties.Setter()
-    ..withExecutionTimeoutInMilliseconds(int)
+    .withExecutionTimeoutInMilliseconds(int)
 ```
 
 
@@ -109,9 +110,17 @@ HystrixCommandProperties.Setter()
 
 > 一位乘客坐在正在行驶的列车的靠窗座位上，列车行驶的公路两侧种着一排挺拔的白杨树，随着列车的前进，路边的白杨树迅速从窗口滑过。我们用每棵树来代表一个请求，用列车的行驶代表时间的流逝，那么，列车上的这个窗口就是一个典型的滑动窗口，这个乘客能通过窗口看到的白杨树就是 Hystrix 要统计的数据。
 
+
+
 Hystrix 并不是只要有一条请求经过就去统计，而是将整个滑动窗口均分为 numBuckets 份，时间每经过一份就去统计一次。**在经过一个时间窗口后，才会判断断路器状态要不要开启**
 
-通过配置参数来修改滑动窗口的大小，例如：
+这个配合Hystrix的工作流程图理解比较好：
+
+![Hystrix 原理](http://static.iocoder.cn/8848af2a2e093d0421d1c7113dedefc1)
+
+
+
+可以通过配置参数来修改滑动窗口的大小，例如：
 
 - `metrics.rollingStats.timeInMilliseconds`：这个参数指定了滑动窗口的时间长度，单位是毫秒。默认值是 10,000，即 10 秒。
 - `metrics.rollingStats.numBuckets`：这个参数指定了滑动窗口中的桶的数量。默认值是 10，即每秒一个桶。
@@ -228,6 +237,8 @@ ProductInfo(id=1, name=iphone7手机, price=5599.0, pictureList=a.jpg,b.jpg, spe
 // 这里重复打印了 69 次上面的结果
 ```
 
+
+
 前 30 次请求，我们传入的 productId 为 -1，所以服务执行过程中会抛出异常。我们设置了最少 20 次请求通过断路器并且异常比例超出 40% 就触发断路。因此执行了 21 次接口调用，每次都抛异常并且走降级，21 次过后，断路器就被打开了。
 
 之后的 9 次请求，都不会执行 `run()` 方法，也就不会打印以下信息。
@@ -235,6 +246,8 @@ ProductInfo(id=1, name=iphone7手机, price=5599.0, pictureList=a.jpg,b.jpg, spe
 ```c
 调用接口查询商品数据，productId=-1
 ```
+
+
 
 而是直接走降级逻辑，调用 getFallback() 执行。
 

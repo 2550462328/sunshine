@@ -1,3 +1,11 @@
+Hystrix工作流程图一：
+
+![Hystrix 原理](http://static.iocoder.cn/8848af2a2e093d0421d1c7113dedefc1)
+
+
+
+Hystrix工作流程图二：
+
 ![hystrix-process](https://doocs.gitee.io/advanced-java/docs/high-availability/images/new-hystrix-process.jpg)
 
 
@@ -39,6 +47,8 @@ Observable<K> oValue   = hystrixObservableCommand.observe();
 Observable<K> toOValue = hystrixObservableCommand.toObservable();Copy to clipboardErrorCopied
 ```
 
+
+
 execute() 实际上会调用 queue().get() 方法，可以看一下 Hystrix 源码。
 
 ```java
@@ -50,6 +60,8 @@ public R execute() {
     }
 }
 ```
+
+
 
 而在 queue() 方法中，会调用 toObservable().toBlocking().toFuture()。
 
@@ -146,12 +158,16 @@ Hystrix 会把每一个依赖服务的调用成功、失败、Reject、Timeout �
 - command 执行超时；
 - run() 或者 construct() 抛出异常。
 
+
+
 一般在降级机制中，都建议给出一些默认的返回值，比如静态的一些代码逻辑，或者从内存中的缓存中提取一些数据，在这里尽量不要再进行网络请求了。
 
 在降级中，如果一定要进行网络调用的话，也应该将那个调用放在一个 HystrixCommand 中进行隔离。
 
 - HystrixCommand 中，实现 getFallback() 方法，可以提供降级机制。
 - HystrixObservableCommand 中，实现 resumeWithFallback() 方法，返回一个 Observable 对象，可以提供降级结果。
+
+
 
 如果没有实现 fallback，或者 fallback 抛出了异常，Hystrix 会返回一个 Observable，但是不会返回任何数据。
 

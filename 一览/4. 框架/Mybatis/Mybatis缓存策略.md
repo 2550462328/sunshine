@@ -6,15 +6,25 @@ Mybatis缓存机制示意图
 
 #### 1. 一级缓存
 
-在应用运行过程中，我们有可能在一次数据库会话中，执行多次查询条件完全相同的 SQL， MyBatis 提供了一级缓存的方案优化这部分场景，如果是相同的 SQL 语句，会优先命中一级缓存， 避免直接对数据库进行查询，提高性能。
-
-每个 SqlSession 中持有了 Executor，每个 Executor 中有一个 LocalCache。当用户发起查询时， MyBatis 根据当前执行的语句生成 MappedStatement，在 Local Cache 进行查询，如果缓存命中 的话，直接返回结果给用户，如果缓存没有命中的话，查询数据库，结果写入 Local Cache，最后 返回结果给用户。
-
-
-
-具体实现类的类关系图如下图所示
+在应用运行过程中，我们有可能在一次数据库会话中，执行多次查询条件完全相同的 SQL， MyBatis 提供了一级缓存的方案优化这部分场景，如果是相同的 SQL 语句，会优先命中一级缓存， 避免直接对数据库进行查询，提高性能。具体执行过程如下：
 
 ![img](http://pcc.huitogo.club/9bf9363503a4075d9aa7bfe076541e10)
+
+
+
+每个 SqlSession 中持有了 Executor，每个 Executor 中有一个 LocalCache。当用户发起查询时， MyBatis 根据当前执行的语句生成 MappedStatement，在 Local Cache 进行查询，如果缓存命中 的话，直接返回结果给用户，如果缓存没有命中的话，查询数据库，结果写入 Local Cache，最后返回结果给用户。
+
+
+
+具体实现类的类关系图如下图所示：
+
+![img](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2018a/d76ec5fe.jpg)
+
+一级缓存执行的时序图：
+
+![img](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2018a/bb851700.png)
+
+总结：
 
 1. MyBatis 一级缓存的生命周期和 SqlSession 一致。
 2. MyBatis 一级缓存内部设计简单，只是一个没有容量限定的 HashMap，在缓存的功能性上有所欠缺。
@@ -22,7 +32,7 @@ Mybatis缓存机制示意图
 
 
 
-下面测试一下：
+下面我们来验证一下：
 
 先准备一下mybatis-config文件（配置数据库、映射关系、实体别名等）
 
@@ -128,18 +138,14 @@ Mybatis缓存机制示意图
 
 
 
-结论：在一个sqlSession环境下执行相同的方法（即使中间出现了其他方法）不会重新执行sql语句，**如果手动进行sqlSession.commit()会则会清空SqlSession中的一级缓存，这样做的目的为了让缓存中存储的是最新的信息，避免脏读。**
-
-
-
-一级缓存过程：
+总结一级缓存过程：
 
 第一次发出一个查询 sql，sql 查询结果写入 sqlsession 的一级缓存中，缓存使用的数据结构是一 个map。
 
 - key：MapperID+offset+limit+Sql+所有的入参
 - value：用户信息
 
-同一个 sqlsession 再次发出相同的 sql，就从缓存中取出数据。如果两次中间出现 commit 操作 （修改、添加、删除），本 sqlsession 中的一级缓存区域全部清空，下次再去缓存中查询不到所 以要从数据库查询，从数据库查询到再写入缓存
+同一个 sqlsession 再次发出相同的 sql，就从缓存中取出数据。如果两次中间出现 **commit 操作** （修改、添加、删除），本 sqlsession 中的一级缓存区域全部清空，下次再去缓存中查询不到所以要从数据库查询，从数据库查询到再写入缓存，这样做的目的为了让缓存中存储的是最新的信息，**避免脏读**。
 
 
 
@@ -153,13 +159,12 @@ Mybatis缓存机制示意图
 
 ![img](http://pcc.huitogo.club/286fabffb6fae4a5a31d5474f44927f1)
 
+- mybatis的二级缓存是通过CacheExecutor实现的。
 
+- CacheExecutor其实是 Executor 的代理对象。所有的查询操作，在 CacheExecutor 中都会先匹配缓存中是否存 在，不存在则查询数据库。
 
-mybatis的二级缓存是通过CacheExecutor实现的。
+- key：MapperID+offset+limit+Sql+所有的入参
 
-CacheExecutor其实是 Executor 的代理对象。所有的查询操作，在 CacheExecutor 中都会先匹配缓存中是否存 在，不存在则查询数据库。
-
-key：MapperID+offset+limit+Sql+所有的入参
 
 
 
@@ -387,7 +392,7 @@ MyBatis默认有对ehcache的支持，启用流程如下：
 
 **二级缓存 -> 一级缓存 -> 数据库**
 
-1. MyBatis 的二级缓存相对于一级缓存来说，实现了 SqlSession 之间缓存数据的共享，同时粒度 更加细，能够到 namespace 级别，通过 Cache 接口实现类不同的组合，对 Cache 的可控性 也更强。
+1. MyBatis 的二级缓存相对于一级缓存来说，实现了 SqlSession 之间缓存数据的共享，同时粒度 更加细，能够到 namespace 级别，通过 Cache 接口实现类不同的组合，对 Cache 的可控性也更强。
 2. MyBatis 在多表查询时，极大可能会出现脏数据，有设计上的缺陷，安全使用二级缓存的条件 比较苛刻。
 3. 在分布式环境下，由于默认的 MyBatis Cache 实现都是基于本地的，分布式环境下必然会出现 读取到脏数据，需要使用集中式缓存将 MyBatis 的 Cache 接口实现，有一定的开发成本，直 接使用 Redis、Memcached 等分布式缓存可能成本更低，安全性也更高。
 

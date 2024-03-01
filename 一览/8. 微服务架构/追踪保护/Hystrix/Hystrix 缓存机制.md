@@ -16,6 +16,8 @@ HystrixCommand 和 HystrixObservableCommand 都可以指定一个缓存 key，�
 
 实际使用
 
+#### 1.  通过HystrixCommand类实现
+
 **初始化Hystrix请求上下文**
 
 ```
@@ -47,6 +49,8 @@ public class HystrixRequestContextFilter implements Filter {
     }
 }
 ```
+
+- 在不同context中的缓存是不共享的，还有这个request内部是一个ThreadLocal，所以request只能限于当前线程。
 
 
 
@@ -131,7 +135,7 @@ public class CacheController {
 调用接口，查询多个商品的信息。
 
 ```
-http://localhost:8080/getProductInfos?productIds=1,1,1,2,2,5Copy to clipboardErrorCopied
+http://localhost:8080/getProductInfos?productIds=1,1,1,2,2,5
 ```
 
 在控制台，我们可以看到以下结果。
@@ -149,3 +153,53 @@ http://localhost:8080/getProductInfos?productIds=1,1,1,2,2,5Copy to clipboardErr
 ```
 
 第一次查询 productId=1 的数据，会调用接口进行查询，不是从缓存中取结果。而随后再出现查询 productId=1 的请求，就直接取缓存了，这样的话，效率明显高很多。
+
+
+
+#### 2. 使用@CacheResult、@CacheRemove和@CacheKey标注来实现缓存
+
+**使用@CacheResult实现缓存功能**
+
+```
+    @CacheResult(cacheKeyMethod = "getCacheKey")
+    @HystrixCommand(commandKey = "findUserById", groupKey = "UserService", threadPoolKey = "userServiceThreadPool")
+    public UserVO findById(Long id) {
+        ResponseEntity<UserVO> user = restTemplate.getForEntity("http://users-service/user?id={id}", UserVO.class, id);
+        return user.getBody();
+    }
+
+    public String getCacheKey(Long id) {
+        return String.valueOf(id);
+    }
+```
+
+- @CacheResult注解中的cacheKeyMethod用来标示缓存key(cacheKey)的生成函数。函数的名称可任意取名，入参和标注@CacheResult的方法是一致的，返回类型是String。
+
+
+
+**使用@CacheResult和@CacheKey实现缓存功能**
+
+```
+    @CacheResult
+    @HystrixCommand(commandKey = "findUserById", groupKey = "UserService", threadPoolKey = "userServiceThreadPool")
+    public UserVO findById2(@CacheKey("id") Long id) {
+        ResponseEntity<UserVO> user = restTemplate.getForEntity("http://users-service/user?id={id}", UserVO.class, id);
+        return user.getBody();
+    }
+```
+
+- 标注@HystrixCommand注解的方法，使用@CacheKey标注需要指定的参数作为缓存key。
+
+
+
+**使用@CacheRemove清空缓存**
+
+```
+    @CacheRemove(commandKey = "findUserById")
+    @HystrixCommand(commandKey = "updateUser",groupKey = "UserService",threadPoolKey = "userServiceThreadPool")
+    public void updateUser(@CacheKey("id")UserVO user){
+        restTemplate.postForObject("http://users-service/user",user,UserVO.class);
+    }
+```
+
+- @CacheRemove必须指定commandKey，否则程序无法找到缓存位置。

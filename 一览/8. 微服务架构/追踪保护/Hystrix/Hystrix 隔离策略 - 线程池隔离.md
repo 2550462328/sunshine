@@ -1,14 +1,12 @@
 资源隔离，就是说，你如果要把对某一个依赖服务的所有调用请求，全部隔离在同一份资源池内，不会去用其它资源了，这就叫资源隔离。哪怕对这个依赖服务，比如说商品服务，现在同时发起的调用量已经到了 1000，但是分配给商品服务线程池内就 10 个线程，最多就只会用这 10 个线程去执行。不会因为对商品服务调用的延迟，将 Tomcat 内部所有的线程资源全部耗尽。
 
-Hystrix 进行资源隔离，其实是提供了一个抽象，叫做 Command。这也是 Hystrix 最最基本的资源隔离技术。
+Hystrix 进行资源隔离，其实是提供了一个抽象，叫做 Command。这也是 Hystrix 最基本的资源隔离技术。
 
 
 
 **利用 HystrixCommand 获取单条数据**
 
 我们通过将调用商品服务的操作封装在 HystrixCommand 中，限定一个 key，比如下面的 `GetProductInfoCommandGroup`，在这里我们可以简单认为这是一个线程池，每次调用商品服务，就只会用该线程池中的资源，不会再去用其它线程资源了。
-
-池，每次调用商品服务，就只会用该线程池中的资源，不会再去用其它线程资源了。
 
 ```java
 public class GetProductInfoCommand extends HystrixCommand<ProductInfo> {
@@ -29,6 +27,8 @@ public class GetProductInfoCommand extends HystrixCommand<ProductInfo> {
     }
 }
 ```
+
+
 
 我们在缓存服务接口中，根据 productId 创建 Command 并执行，获取到商品数据。
 
@@ -81,6 +81,8 @@ public class GetProductInfosCommand extends HystrixObservableCommand<ProductInfo
     }
 }
 ```
+
+
 
 在缓存服务接口中，根据传来的 id 列表，比如是以 `,` 分隔的 id 串，通过上面的 HystrixObservableCommand，执行 Hystrix 的一些 API 方法，获取到所有商品数据。
 
