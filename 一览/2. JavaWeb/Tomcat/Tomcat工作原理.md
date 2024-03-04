@@ -1,10 +1,6 @@
 这里需要着重说一下 Connector 和 Container的细节
 
-
-
 ![img](http://pcc.huitogo.club/a8b78a1b823d55f60128420d931605a5)
-
-
 
 1. Endpoint接收Socket连接，生成一个SocketProcessor任务提交到线程池去处理
 2. SocketProcessor的run方法会调用Processor组件去解析应用层协议，Processor通过解析生成Request对象后，会调 用Adapter的service方法。

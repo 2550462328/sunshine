@@ -1,4 +1,4 @@
-### 1. 内存优化
+#### 1. 内存优化
 
 1. **关掉对web.xml的监视，把jsp提前编辑成Servlet。**
 
@@ -40,11 +40,11 @@ setJAVA_OPTS=-server -Xms1024m -Xmx2048m -Xss512K -XX:PermSize=128m-XX:MaxPermSi
 
 
 
-### 2. 配置优化
+#### 2. 配置优化
 
 配置优化,主要有三方面:
 
-#### 2.1 Connector 优化
+##### 2.1 Connector 优化
 
 Connector是连接器，它负责接收客户的请求，以及向客户端回送响应的消息。
 
@@ -87,7 +87,7 @@ redirectPort="8443"acceptCount="500" maxThreads="400" />
 
 
 
-#### 2.2 线程池
+##### 2.2 线程池
 
 使用线程池的好处在于减少了创建销毁线程的相关消耗，而且可以提高线程的使用效率。使用线程池就在Service标签中配置Executor就可以了
 
@@ -127,7 +127,7 @@ redirectPort="8443"acceptCount="500" maxThreads="400" />
 
 
 
-#### 2.3 Listener
+##### 2.3 Listener
 
 还有一个影响tomcat性能的因素是内存泄漏,我们在Server标签中配置一个JreMemoryLeakPreventionListener就可以用来预防JRE内存泄漏。
 
@@ -171,6 +171,6 @@ redirectPort="8443"acceptCount="500" maxThreads="400" />
 
 
 
-### 3. 组件优化
+#### 3. 组件优化
 
 可以选用Tomcat Native组件，它可以让 Tomcat使用 Apache 的 APR包来处理包括文件和网络IO操作，从而提升性能及兼容性。

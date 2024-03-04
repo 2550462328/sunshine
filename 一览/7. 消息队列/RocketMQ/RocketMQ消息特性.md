@@ -183,6 +183,8 @@ RocketMQ支持消息的高可靠，影响消息可靠性的几种情况：
 
 回溯消费是指Consumer已经消费成功的消息，由于业务上需求需要重新消费，要支持此功能，Broker在向Consumer投递成功消息后，消息仍然需要保留。并且重新消费一般是按照时间维度，例如由于Consumer系统故障，恢复后需要重新消费1小时前的数据，那么Broker要提供一种机制，可以按照时间维度来回退消费进度。RocketMQ支持按照时间回溯消费，时间维度精确到毫秒。
 
+当然消费者也可以直接修改offsetId还原消费下标进行回溯消费。
+
 
 
 #### 8. 事务消息
@@ -207,13 +209,31 @@ level有以下三种情况：
 
 
 
-定时消息会暂存在名为SCHEDULE_TOPIC_XXXX的topic中，并根据delayTimeLevel存入特定的queue，queueId = delayTimeLevel – 1，即一个queue只存相同延迟的消息，保证具有相同发送延迟的消息能够顺序消费。broker会调度地消费SCHEDULE_TOPIC_XXXX，将消息写入真实的topic。
+定时消息会暂存在名为SCHEDULE_TOPIC_XXXX的topic中，并根据delayTimeLevel存入特定的queue，queueId = delayTimeLevel – 1，即**一个queue只存相同延迟的消息**，保证具有相同发送延迟的消息能够顺序消费。broker会调度地消费SCHEDULE_TOPIC_XXXX，将消息写入真实的topic。
 
 需要注意的是，定时消息会在第一次写入和调度写入真实topic时都会计数，因此发送数量、tps都会变高。
 
 
 
+如果想要实现任一时刻的延迟消息，比较简单的方式是插入延迟消息到数据库中，然后通过定时任务轮询，到达指定时间，发送到 RocketMQ 中。
+
+
+
 #### 10. 消息重试
+
+##### 10.1 生产者消息重投
+
+生产者在发送消息时，同步消息失败会重投，异步消息有重试，oneway没有任何保证。消息重投保证消息尽可能发送成功、不丢失，但可能会造成消息重复，消息重复在RocketMQ中是无法避免的问题。消息重复在一般情况下不会发生，当出现消息量大、网络抖动，消息重复就会是大概率事件。另外，生产者主动重发、consumer负载变化也会导致重复消息。如下方法可以设置消息重试策略：
+
+- retryTimesWhenSendFailed:同步发送失败重投次数，默认为2，因此生产者会最多尝试发送retryTimesWhenSendFailed + 1次。不会选择上次失败的broker，尝试向其他broker发送，最大程度保证消息不丢。超过重投次数，抛出异常，由客户端保证消息不丢。当出现RemotingException、MQClientException和部分MQBrokerException时会重投。
+
+- retryTimesWhenSendAsyncFailed:异步发送失败重试次数，异步重试不会选择其他broker，仅在同一个broker上做重试，不保证消息不丢。
+
+- retryAnotherBrokerWhenNotStoreOK:消息刷盘（主或备）超时或slave不可用（返回状态非SEND_OK），是否尝试发送到其他broker，默认false。十分重要消息可以开启。
+
+  
+
+##### 10.2 消息者消费重试
 
 Consumer消费消息失败后，要提供一种重试机制，令消息再消费一次。Consumer消费消息失败通常可以认为有以下几种情况：
 
@@ -222,21 +242,39 @@ Consumer消费消息失败后，要提供一种重试机制，令消息再消费
 
 
 
-RocketMQ会为每个消费组都设置一个Topic名称为“%RETRY%+consumerGroup”的重试队列（这里需要注意的是，这个Topic的重试队列是针对消费组，而不是针对每个Topic设置的），用于暂时保存因为各种异常而导致Consumer端无法消费的消息。考虑到异常恢复起来需要一些时间，会为重试队列设置多个重试级别，每个重试级别都有与之对应的重新投递延时，重试次数越多投递延时就越大。RocketMQ对于重试消息的处理是先保存至Topic名称为“SCHEDULE_TOPIC_XXXX”的延迟队列中，后台定时任务按照对应的时间进行Delay后重新保存至“%RETRY%+consumerGroup”的重试队列中。
+消息重试的步骤如下：
+
+1. Consumer 消费失败，将消息发送回 Broker 。
+2. Broker 收到重试消息之后置换 Topic ，存储消息。
+3. Consumer 会拉取该 Topic 对应的 retryTopic 的消息。
+4. Consumer 拉取到 retryTopic 消息之后，置换到原始的 Topic ，把消息交给 Listener 消费。
 
 
 
-#### 11. 消息重投
+实现原理大概是：
 
-生产者在发送消息时，同步消息失败会重投，异步消息有重试，oneway没有任何保证。消息重投保证消息尽可能发送成功、不丢失，但可能会造成消息重复，消息重复在RocketMQ中是无法避免的问题。消息重复在一般情况下不会发生，当出现消息量大、网络抖动，消息重复就会是大概率事件。另外，生产者主动重发、consumer负载变化也会导致重复消息。如下方法可以设置消息重试策略：
+1. Consumer 消息失败后，会将消息的 Topic 修改为 `%RETRY%` + Topic 进行，添加 `"RETRY_TOPIC"` 属性为原始 Topic ，然后再返回给 Broker 中。
+2. Broker 收到重试消息之后，会有两次修改消息的 Topic 。
+   - 首先，会将消息的 Topic 修改为 `%RETRY%` + ConsumerGroup ，因为这个消息是当前消费这分组消费失败，只能被这个消费组所重新消费。注意，消费者会**默认订阅 Topic 为 `%RETRY%` + ConsumerGroup 的消息**。
+   - 然后，会将消息的 Topic 修改为 `SCHEDULE_TOPIC_XXXX` ，添加 `"REAL_TOPIC"` 属性为 `%RETRY%` + ConsumerGroup ，因为重试消息需要延迟消费。
+3. Consumer 会拉取该 Topic 对应的 retryTopic 的消息，此处的 retryTopic 为 `%RETRY%` + ConsumerGroup 。
+4. Consumer 拉取到 retryTopic 消息之后，置换到原始的 Topic ，因为有消息的 `"RETRY_TOPIC"` 属性是原始 Topic ，然后把消息交给 Listener 消费。
 
-- retryTimesWhenSendFailed:同步发送失败重投次数，默认为2，因此生产者会最多尝试发送retryTimesWhenSendFailed + 1次。不会选择上次失败的broker，尝试向其他broker发送，最大程度保证消息不丢。超过重投次数，抛出异常，由客户端保证消息不丢。当出现RemotingException、MQClientException和部分MQBrokerException时会重投。
-- retryTimesWhenSendAsyncFailed:异步发送失败重试次数，异步重试不会选择其他broker，仅在同一个broker上做重试，不保证消息不丢。
-- retryAnotherBrokerWhenNotStoreOK:消息刷盘（主或备）超时或slave不可用（返回状态非SEND_OK），是否尝试发送到其他broker，默认false。十分重要消息可以开启。
+
+
+##### 10.3 死信队列
+
+死信队列用于处理无法被正常消费的消息。当一条消息初次消费失败，消息队列会自动进行消息重试；达到最大重试次数后，若消费依然失败，则表明消费者在正常情况下无法正确地消费该消息，此时，消息队列 不会立刻将消息丢弃，而是将其发送到该消费者对应的特殊队列中。
+
+RocketMQ将这种正常情况下无法被消费的消息称为死信消息（Dead-Letter Message），将存储死信消息的特殊队列称为死信队列（Dead-Letter Queue）。在RocketMQ中，可以通过使用console控制台对死信队列中的消息进行重发来使得消费者实例再次进行消费。
+
+> 默认情况下，当一条消息被消费失败 16 次后，会被存储到 Topic 为 `"%DLQ%"` + ConsumerGroup 到死信队列。
+>
+> 我们可以通过订阅 `"%DLQ%"` + ConsumerGroup ，做相应的告警。
 
 
 
-#### 12. 流量控制
+#### 11. 流量控制
 
 生产者流控，因为broker处理能力达到瓶颈；消费者流控，因为消费能力达到瓶颈。
 
@@ -263,8 +301,3 @@ RocketMQ会为每个消费组都设置一个Topic名称为“%RETRY%+consumerGro
 
 
 
-#### 13. 死信队列
-
-死信队列用于处理无法被正常消费的消息。当一条消息初次消费失败，消息队列会自动进行消息重试；达到最大重试次数后，若消费依然失败，则表明消费者在正常情况下无法正确地消费该消息，此时，消息队列 不会立刻将消息丢弃，而是将其发送到该消费者对应的特殊队列中。
-
-RocketMQ将这种正常情况下无法被消费的消息称为死信消息（Dead-Letter Message），将存储死信消息的特殊队列称为死信队列（Dead-Letter Queue）。在RocketMQ中，可以通过使用console控制台对死信队列中的消息进行重发来使得消费者实例再次进行消费。

@@ -1,7 +1,5 @@
 下图是tomcat 的启动时序图
 
-
-
 ![img](http://pcc.huitogo.club/92eeecfa6b461721c5696f00dd7b7971)
 
 

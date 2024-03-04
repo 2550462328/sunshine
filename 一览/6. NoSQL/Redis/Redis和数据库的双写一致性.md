@@ -160,7 +160,7 @@
 
 ![redis-junior-inconsistent](https://doocs.gitee.io/advanced-java/docs/high-concurrency/images/redis-junior-inconsistent.png)
 
-解决思路 1：先删除缓存，再更新数据库。如果数据库更新失败了，那么数据库中是旧数据，缓存中是空的，那么数据不会不一致。因为读的时候缓存没有，所以去读了数据库中的旧数据，然后更新到缓存中。
+解决思路 1：先删除缓存，再更新数据库，也就是【方案5】。如果数据库更新失败了，那么数据库中是旧数据，缓存中是空的，那么数据不会不一致。因为读的时候缓存没有，所以去读了数据库中的旧数据，然后更新到缓存中。
 
 
 
@@ -175,8 +175,6 @@ public void set(key, value) {
     deleteFromRedis(key);
 }
 ```
-
-
 
 删除的动作，可以有多种选择，比如：1. 使用 `DelayQueue`，会随着 JVM 进程的死亡，丢失更新的风险；2. 放在 `MQ`，但编码复杂度为增加。总之，我们需要综合各种因素去做设计，选择一个最合理的解决方案。
 

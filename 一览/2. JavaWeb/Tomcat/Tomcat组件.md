@@ -1,7 +1,5 @@
 tomcat 的组件 和 组件之间的交互主要如下
 
-
-
 ![img](http://pcc.huitogo.club/5fc5d76298edbf10a46aa8369fac7df5)
 
 
@@ -46,7 +44,7 @@ wrapper在tomcat中的实现类是：StandardWrapper
 
 
 
-### 1. Connector
+#### 1. Connector
 
 connector架构：最底层使用的是Socket进行连接的，Request和Response是按照Http协议来封装的，所以Connector同时需要实现TCP/IP协议和Http协议
 
@@ -62,7 +60,7 @@ Adapter 用于将Request交给Container 进行具体处理，即将请求适配�
 
 
 
-### 2. Container
+#### 2. Container
 
 ![img](http://pcc.huitogo.club/729b44dc8f59d6aadf5efc9465e472ac)
 

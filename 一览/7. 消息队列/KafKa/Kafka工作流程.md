@@ -1,4 +1,70 @@
-#### 1. 生产者设计概要
+#### 1.Kafka工作流程
+
+![](https://pcc.huitogo.club/z0/456f3adab70714c0a1b1fdbd8a686732)
+
+- 1、Producer ，根据指定的 partition 方法（round-robin、hash等），将消息发布到指定 Topic 的 Partition 里面。
+- 2、Kafka 集群，接收到 Producer 发过来的消息后，将其持久化到硬盘，并保留消息指定时长（可配置），而不关注消息是否被消费。
+- 3、Consumer ，从 Kafka 集群 pull 数据，并控制获取消息的 offset 。至于消费的进度，可手动或者自动提交给 Kafka 集群。
+
+
+
+##### 1.1 Producer 发送消息
+
+Producer 采用 push 模式将消息发布到 Broker，每条消息都被 append 到 Patition 中，属于顺序写磁盘（顺序写磁盘效率比随机写内存要高，保障 Kafka 吞吐率）。Producer 发送消息到 Broker 时，会根据分区算法选择将其存储到哪一个 Partition 。
+
+
+
+其路由机制为：
+
+- 指定了 Partition ，则直接使用。
+- 未指定 Partition 但指定 key ，通过对 key 进行 hash 选出一个 Partition 。
+- Partition 和 key 都未指定，使用轮询选出一个 Partition 。
+
+
+
+写入流程：
+
+1. Producer 先从 ZooKeeper 的 `"/brokers/.../state"` 节点找到该 Partition 的 leader 。
+
+   > 注意，Producer 只和 Partition 的 leader 进行交互。
+
+2. Producer 将消息发送给该 leader 。
+
+3. leader 将消息写入本地 log 。
+
+4. followers 从 leader pull 消息，写入本地 log 后 leader 发送 ACK 。
+
+5. leader 收到所有 ISR 中的 replica 的 ACK 后，增加 HW（high watermark ，最后 commit 的 offset） 并向 Producer 发送 ACK 。
+
+   
+
+##### 1.2 Broker 存储消息
+
+物理上把 Topic 分成一个或多个 Patition，每个 Patition 物理上对应一个文件夹（该文件夹存储该 Patition 的所有消息和索引文件）。
+
+
+
+##### 1.3 Consumer 消费消息
+
+high-level Consumer API 提供了 consumer group 的语义，一个消息只能被 group 内的一个 Consumer 所消费，且 Consumer 消费消息时不关注 offset ，**最后一个 offset 由 ZooKeeper 保存**（下次消费时，该 group 中的 Consumer 将从 offset 记录的位置开始消费）。
+
+
+
+注意：
+
+- 如果消费线程大于 Patition 数量，则有些线程将收不到消息。
+- 如果 Patition 数量大于消费线程数，则有些线程多收到多个 Patition 的消息。
+- 如果一个线程消费多个 Patition，则无法保证你收到的消息的顺序，而一个 Patition 内的消息是有序的。
+
+Consumer 采用 pull 模式从 Broker 中读取数据。
+
+> ps：RocketMQ是支持消费组模式和广播模式的，但Kafka出于吞吐量设计考虑，不支持广播模式。
+
+
+
+再来详细介绍下Kafka的生产者和消费者的设计概要
+
+#### 2. 生产者设计概要
 
 当我们发送消息之前，先问几个问题：每条消息都是很关键且不能容忍丢失么？偶尔重复消息可以么？我们关注的是消息延迟还是写入消息的吞吐量？
 
@@ -27,9 +93,27 @@
 
 
 
-#### 2. 消费者设计概要
+***Q1：生产者是一定会批量发送数据给Broker吗？***
 
-**消费者与消费组**
+答案是NO，生产者发送模式分为 **同步** 和 **异步**，只有在异步模式下才支持批量发送数据。
+
+关于异步模式，有几个配置参数：
+
+![](https://pcc.huitogo.club/z0/792a59a9b2b4f271c179e81cf4278322)
+
+- 以 batch 的方式推送数据可以极大的提高处理效率，Kafka Producer 可以将消息在内存中累计到一定数量后作为一个 batch 发送请求。batch 的数量大小可以通过 Producer 的参数（`batch.num.messages`）控制。通过增加 batch 的大小，可以减少网络请求和磁盘 IO 的次数，当然具体参数设置需要在效率和时效性方面做一个权衡。
+- 在比较新的版本中还有`batch.size`这个参数。Producer 会尝试批量发送属于同一个 Partition 的消息以减少请求的数量. 这样可以提升客户端和服务端的性能。默认大小是 16348 byte (16k).
+  - 发送到 Broker 的请求可以包含多个 batch ，每个 batch 的数据属于同一个 Partition 。
+  - 太小的 batch 会降低吞吐. 太大会浪费内存。
+
+> ps：Kafka 有个问题，如果分区过多，那么日志分段也会很多，写的时候由于是批量写，其实就会变成随机写了，随机 I/O 这个时候对性能影响很大。所以一般来说 Kafka 不能有太多的Partition 。针对这一点，RocketMQ 把所有的日志都写在一个文件里面，就能变成顺序写，通过一定优化，读也能接近于顺序读。
+
+
+
+#### 3. 消费者设计概要
+
+- **消费者与消费组**
+
 
 Kafka消费者是消费组的一部分，当多个消费者形成一个消费组来消费主题时，每个消费者会收到不同分区的消息。假设有一个T1主题，该主题有4个分区；同时我们有一个消费组G1，这个消费组只有一个消费者C1。那么消费者C1将会收到这4个分区的消息，如下所示：
 
@@ -71,13 +155,11 @@ Kafka消费者是消费组的一部分，当多个消费者形成一个消费组
 
 最后，总结起来就是：如果应用需要读取全量消息，那么请为该应用设置一个消费组；如果该应用消费能力不足，那么可以考虑在这个消费组里增加消费者。
 
-
-
-**需要注意的是消费者从Broker是通过pull模型拉去消息的**
+> **需要注意的是消费者从Broker是通过pull模型拉去消息的**
 
 
 
-**为什么 Kafka 是 pull 模型？**
+- **为什么 Kafka 是 pull 模型？**
 
 消费者应该向 Broker 要数据（pull）还是 Broker 向消费者推送数据（push）？作为一个消息系统，Kafka 遵循了传统的方式，选择由 Producer 向 broker push 消息并由 Consumer 从 broker pull 消息。一些 logging-centric system，比如 Facebook 的[Scribe](https://github.com/facebookarchive/scribe)和 Cloudera 的[Flume](https://flume.apache.org/)，采用 push 模式。事实上，push 模式和 pull 模式各有优劣。
 
@@ -89,7 +171,7 @@ Kafka消费者是消费组的一部分，当多个消费者形成一个消费组
 
 
 
-**消费组与分区的重平衡**
+- **消费组与分区的重平衡**
 
 当新的消费者加入消费组，它会消费一个或多个分区，而这些分区之前是由其他消费者负责的；另外，当消费者离开消费组（比如重启、宕机等）时，它所消费的分区会分配给其他分区。这种现象称为**重平衡（rebalance）**。
 
@@ -105,4 +187,6 @@ Kafka消费者是消费组的一部分，当多个消费者形成一个消费组
 
 
 
-在 0.10.1 版本，Kafka 对心跳机制进行了修改，将发送心跳与拉取消息进行分离，这样使得发送心跳的频率不受拉取的频率影响。另外更高版本的 Kafka 支持配置一个消费者多长时间不拉取消息但仍然保持存活，这个配置可以避免活锁（livelock）。活锁，是指应用没有故障但是由于某些原因不能进一步消费。
+在 0.10.1 版本，Kafka 对心跳机制进行了修改，将发送心跳与拉取消息进行分离，这样使得发送心跳的频率不受拉取的频率影响。另外更高版本的 Kafka 支持配置一个消费者多长时间不拉取消息但仍然保持存活，这个配置可以避免活锁（livelock）。
+
+> 活锁，是指应用没有故障但是由于某些原因不能进一步消费。

@@ -7,23 +7,47 @@
 RocketMQ 网络部署特点
 
 1. NameServer是一个几乎无状态节点，可集群部署，节点之间无任何信息同步。
-2. Broker部署相对复杂，Broker分为Master与Slave，一个Master可以对应多个Slave，但是一个Slave只能对应一个Master，Master与Slave 的对应关系通过指定相同的BrokerName，不同的BrokerId 来定义，BrokerId为0表示Master，非0表示Slave。Master也可以部署多个。每个Broker与NameServer集群中的所有节点建立长连接，定时注册Topic信息到所有NameServer。 注意：当前RocketMQ版本在部署架构上支持一Master多Slave，但只有BrokerId=1的从服务器才会参与消息的读负载。
-3. Producer与NameServer集群中的其中一个节点（随机选择）建立长连接，定期从NameServer获取Topic路由信息，并向提供Topic 服务的Master建立长连接，且定时向Master发送心跳。Producer完全无状态，可集群部署。
+2. Broker部署相对复杂，Broker分为Master与Slave，一个Master可以对应多个Slave，但是一个Slave只能对应一个Master，Master与Slave 的对应关系通过指定相同的BrokerName，不同的BrokerId 来定义，BrokerId为0表示Master，非0表示Slave。Master也可以部署多个。每个Broker与NameServer集群中的所有节点建立长连接，定时注册Topic信息到所有NameServer。 注意：当前RocketMQ版本在部署架构上支持一Master多Slave，但**只有BrokerId=1的从服务器才会参与消息的读负载**。
+3. Producer与NameServer集群中的其中一个节点（随机选择）建立长连接，定期从NameServer获取Topic路由信息，并**向提供Topic 服务的Master建立长连接**，且定时向Master发送心跳。Producer完全无状态，可集群部署。
 4. Consumer与NameServer集群中的其中一个节点（随机选择）建立长连接，定期从NameServer获取Topic路由信息，并向提供Topic服务的Master、Slave建立长连接，且定时向Master、Slave发送心跳。Consumer既可以从Master订阅消息，也可以从Slave订阅消息，消费者在向Master拉取消息时，Master服务器会根据拉取偏移量与最大偏移量的距离（判断是否读老消息，产生读I/O），以及从服务器是否可读等因素建议下一次是从Master还是Slave拉取。
 
 
 
 结合部署架构图，描述集群工作流程：
 
-1. 启动NameServer，NameServer起来后监听端口，等待Broker、Producer、Consumer连上来，相当于一个路由控制中心。
-2. Broker启动，跟所有的NameServer保持长连接，定时发送心跳包。心跳包中包含当前Broker信息(IP+端口等)以及存储所有Topic信息。注册成功后，NameServer集群中就有Topic跟Broker的映射关系。
-3. 收发消息前，先创建Topic，创建Topic时需要指定该Topic要存储在哪些Broker上，也可以在发送消息时自动创建Topic。
-4. Producer发送消息，启动时先跟NameServer集群中的其中一台建立长连接，并从NameServer中获取当前发送的Topic存在哪些Broker上，轮询从队列列表中选择一个队列，然后与队列所在的Broker建立长连接从而向Broker发消息。
-5. Consumer跟Producer类似，跟其中一台NameServer建立长连接，获取当前订阅Topic存在哪些Broker上，然后直接跟Broker建立连接通道，开始消费消息。
+🦅 **Producer**
+
+- 1、Producer 自身在应用中，所以无需考虑高可用。
+- 2、Producer 配置多个 Namesrv 列表，从而保证 Producer 和 Namesrv 的连接高可用。并且，会从 Namesrv 定时拉取最新的 Topic 信息。
+- 3、Producer 会和所有 Broker 直连，在发送消息时，会选择一个 Broker 进行发送。如果发送失败，则会使用另外一个 Broker 。
+- 4、Producer 会定时向 Broker 心跳，证明其存活。而 Broker 会定时检测，判断是否有 Producer 异常下线。
+
+🦅 **Consumer**
+
+- 1、Consumer 需要部署多个节点，以保证 Consumer 自身的高可用。当相同消费者分组中有新的 Consumer 上线，或者老的 Consumer 下线，会重新分配 Topic 的 Queue 到目前消费分组的 Consumer 们。
+- 2、Consumer 配置多个 Namesrv 列表，从而保证 Consumer 和 Namesrv 的连接高可用。并且，会从 Consumer 定时拉取最新的 Topic 信息。
+- 3、Consumer 会和所有 Broker 直连，消费相应分配到的 Queue 的消息。如果消费失败，则会发回消息到 Broker 中。
+- 4、Consumer 会定时向 Broker 心跳，证明其存活。而 Broker 会定时检测，判断是否有 Consumer 异常下线。
+
+🦅 **Namesrv**
+
+- 1、Namesrv 需要部署多个节点，以保证 Namesrv 的高可用。
+- 2、Namesrv 本身是无状态，不产生数据的存储，是通过 Broker 心跳将 Topic 信息同步到 Namesrv 中。
+- 3、多个 Namesrv 之间不会有数据的同步，是通过 Broker 向多个 Namesrv 多写。
+
+🦅 **Broker**
+
+- 1、多个 Broker 可以形成一个 Broker 分组。每个 Broker 分组存在一个 Master 和多个 Slave 节点。
+  - Master 节点，可提供读和写功能。Slave 节点，可提供读功能。
+  - Master 节点会不断发送新的 CommitLog 给 Slave节点。Slave 节点不断上报本地的 CommitLog 已经同步到的位置给 Master 节点。
+  - Slave 节点会从 Master 节点拉取消费进度、Topic 配置等等。
+- 2、多个 Broker 分组，形成 Broker 集群。
+  - Broker 集群和集群之间，不存在通信与数据同步。
+- 3、Broker 可以配置同步刷盘或异步刷盘，根据消息的持久化的可靠性来配置。
 
 
 
-#### 2. RocketMq中Broker节点消息复制
+#### 2.Broker节点消息复制
 
 在Borker 主从模式下消息复制有**同步复制**和**异步复制**两种。
 
@@ -34,7 +58,7 @@ RocketMQ 网络部署特点
 
 异步复制会不会也像异步刷盘那样影响消息的可靠性呢？
 
-答案是**不会**的，因为两者就是不同的概念，对于**消息可靠性是通过不同的刷盘策略保证的，\**而像\**异步同步复制策略仅仅是影响到了 可用性** 。为什么呢？因为主Broker宕机后，从Broker还是可以提供读消息服务的，因为是异步同步，所以会有一部分消息没有同步过来，会有**短暂的消息不一致情况**，但是在**主Broker重启后从节点那部分未来得及复制的消息还会继续复制**。
+答案是**不会**的，因为两者就是不同的概念，对于**消息可靠性是通过不同的刷盘策略保证的，而像异步同步复制策略仅仅是影响到了 可用性** 。为什么呢？因为主Broker宕机后，从Broker还是可以提供读消息服务的，因为是异步同步，所以会有一部分消息没有同步过来，会有**短暂的消息不一致情况**，但是在**主Broker重启后从节点那部分未来得及复制的消息还会继续复制**。
 
 
 
