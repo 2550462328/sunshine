@@ -97,7 +97,24 @@ select count(*) from t_user;
 
 
 
-#### 4.  explain sql
+#### 4. show processlist
+
+观察是否有大量的线程处于不正常的状态或特征。
+
+
+
+比如我们可以借助show processlist解决死锁问题
+
+> show PROCESSLIST;
+> select * from information_schema.INNODB_TRX;
+> SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCKS;
+> SELECT * FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS;
+> kill 12168070;
+> show engine innodb status;
+
+
+
+#### 5.  explain sql
 
 可以通过explain sql语句来了解当前语句的缺陷来进一步进行调优
 

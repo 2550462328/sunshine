@@ -25,8 +25,20 @@ HotSpot虚拟机已经没有PermGen space（永久代）这个区域了，取而
 **为什么使用元空间代替方法区？**
 
 1. 字符串常量存在方法区中，容易出现性能问题和内存溢出。
+
 2. 类和方法的信息等比较难确定大小，因此方法区大小的指定比较困难，太小容易出现方法区溢出，太大容易导致堆空间不足。
+
 3. 方法区的垃圾回收会带来不必要的复杂度，并且回收率偏低。
+
+4. Oracle 可能会将HotSpot 与 JRockit 合二为一。
+
+   参照 JEP122 ：http://openjdk.java.net/jeps/122 ，原文截取：
+
+   > Motivation
+   >
+   > This is part of the JRockit and Hotspot convergence effort. JRockit customers do not need to configure the permanent generation (since JRockit does not have a permanent generation) and are accustomed to not configuring the permanent generation.
+
+   即：移除永久代是为融合 HotSpot JVM 与 JRockit VM 而做出的努力，因为 JRockit 没有永久代，不需要配置永久代。
 
 
 

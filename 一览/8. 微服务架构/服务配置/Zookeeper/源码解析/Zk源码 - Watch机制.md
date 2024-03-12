@@ -81,7 +81,7 @@ private void readRequest() throws IOException {
 
 
 
-#### 4. 哪些情况下会触发watch？
+#### 2. 哪些情况下会触发watch？
 
 触发watch的场景大致分成两种，节点自身变化 和 节点数据变化，分别对应DataTree中的childWatches 和 dataWatches
 

@@ -21,14 +21,32 @@
 其中
 
 - **Leader**： 一个ZooKeeper集群同一时间只会有一个实际工作的Leader，它会发起并维护与各Follwer及Observer间的心跳。所有的写操作必须要通过Leader完成再由Leader将写操作广播给其它服务器。
-- **Follower**： 一个ZooKeeper集群可能同时存在多个Follower，它会响应Leader的心跳。Follower可直接处理并返回客户端的读请求，同时会将写请求转发给Leader处理，并且负责在Leader处理写请求时对请求进行投票。
+
+- **Follower**： 一个ZooKeeper集群可能同时存在多个Follower，它会响应Leader的心跳。
+
+  - 处理客户端的非事务请求，转发事务请求给 Leader 服务器。
+  - 参与事务请求 Proposal 的投票。
+  - 参与 Leader 选举投票。
+
 - **Observer**：角色与Follower类似，但是无投票权。
+
+  3.3.0 版本以后引入的一个服务器角色，在不影响集群事务处理能力的基础上提升集群的非事务处理能力。
+
+  - 处理客户端的非事务请求，转发事务请求给 Leader 服务器
+  - 不参与任何形式的投票。
+
+  如果 ZooKeeper 集群的读取负载很高，或者客户端多到跨机房，可以设置一些 Observer 服务器，以提高读取的吞吐量。Observer 和 Follower 比较相似，只有一些小区别：
+
+  - 首先 Observer 不属于法定人数，即不参加选举也不响应提议，也不参与写操作的“过半写成功”策略；
+  - 其次是 Observer 不需要将事务持久化到磁盘，一旦 Observer 被重启，需要从 Leader 重新同步整个名字空间。
 
 
 
 #### 2. 集群服务器状态
 
 - LOOKING ：寻找 Leader。
+
+  当服务器处于该状态时，它会认为当前集群中没有 Leader ，因此需要进入 Leader 选举状态。
 
 - LEADING ：Leader 状态，对应的节点为 Leader。
 
