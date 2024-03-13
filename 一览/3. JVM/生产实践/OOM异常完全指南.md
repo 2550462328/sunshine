@@ -2,7 +2,7 @@
 
 Java应用程序在启动时会指定所需要的内存大小，它被分割成两个不同的区域：`Heap space（堆空间）`和`Permgen（永久代）`：
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtYTY4NTE5NTMzZDU5OTk2ZS5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy8yNzEvZm9ybWF0L3dlYnA?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtYTY4NTE5NTMzZDU5OTk2ZS5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy8yNzEvZm9ybWF0L3dlYnA)
 
 > 注：jdk1.7之后就没有Permgen了
 
@@ -253,7 +253,7 @@ java -Xmx1024m com.yourcompany.YourClass
 
 Java中堆空间是JVM管理的最大一块内存空间，可以在JVM启动时指定堆空间的大小，其中堆被划分成两个不同的区域：新生代（Young）和老年代（Tenured），新生代又被划分为3个区域：`Eden`、`From Survivor`、`To Survivor`，如下图所示。
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtNWRiN2ViNDUxOTUxNjVhYy5qcGc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy8xMDI0L2Zvcm1hdC93ZWJw?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtNWRiN2ViNDUxOTUxNjVhYy5qcGc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy8xMDI0L2Zvcm1hdC93ZWJw)
 
 `java.lang.OutOfMemoryError: PermGen space`错误就表明持久代所在区域的内存已被耗尽。
 
@@ -395,7 +395,7 @@ jmap -dump:file=dump.hprof,format=b <process-id>
 
 前文已经提过，`PermGen`区域用于存储类的名称和字段，类的方法，方法的字节码，常量池，JIT优化等，但从Java8开始，Java中的内存模型发生了重大变化：引入了称为`Metaspace`的新内存区域，而删除了`PermGen`区域。请注意：不是简单的将`PermGen`区所存储的内容直接移到`Metaspace`区，`PermGen`区中的某些部分，已经移动到了普通堆里面。
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtZDY2MzU2ZDIxN2FiM2I0NS5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtZDY2MzU2ZDIxN2FiM2I0NS5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA)
 
 
 
@@ -467,7 +467,7 @@ Exception in thread "main" javassist.CannotCompileException: by java.lang.OutOfM
 
 一个思考线程的方法是将线程看着是执行任务的工人，如果你只有一个工人，那么他同时只能执行一项任务，但如果你有十几个工人，就可以同时完成你几个任务。就像这些工人都在物理世界，JVM中的线程完成自己的工作也是需要一些空间的，当有足够多的线程却没有那么多的空间时就会像这样：
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtMjMyOGQ3MGFlNWZiZjgxYi5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtMjMyOGQ3MGFlNWZiZjgxYi5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA)
 
 出现`java.lang.OutOfMemoryError:Unable to create new native thread`就意味着Java应用程序已达到其可以启动线程数量的极限了。
 
@@ -523,7 +523,7 @@ $ ulimit -u
 
 Java应用程序在启动时会指定所需要的内存大小，可以通过`-Xmx`和其他类似的启动参数来指定。在JVM请求的总内存大于可用物理内存的情况下，操作系统会将内存中的数据交换到磁盘上去。
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtMDQ2YzM4MzE2ZGViNTExNi5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtMDQ2YzM4MzE2ZGViNTExNi5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA)
 
 `Out of swap space?`表示交换空间也将耗尽，并且由于缺少物理内存和交换空间，再次尝试分配内存也将失败。
 
@@ -580,7 +580,7 @@ Java GC会扫描内存中的数据，如果是对交换空间运行垃圾回收�
 
 Java对应用程序可以分配的最大数组大小有限制。不同平台限制有所不同，但通常在1到21亿个元素之间。
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtZWU5ZjdiZTUzMjMxODRhMC5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtZWU5ZjdiZTUzMjMxODRhMC5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA)
 
 当你遇到`Requested array size exceeds VM limit`错误时，意味着你的应用程序试图分配大于Java虚拟机可以支持的数组。
 
@@ -649,7 +649,7 @@ java.lang.OutOfMemoryError: Requested array size exceeds VM limit
 
 为了理解这个错误，我们需要补充一点操作系统的基础知识。操作系统是建立在进程的概念之上，这些进程在内核中作业，其中有一个非常特殊的进程，名叫“内存杀手（Out of memory killer）”。当内核检测到系统内存不足时，OOM killer被激活，然后选择一个进程杀掉。哪一个进程这么倒霉呢？选择的算法和想法都很朴实：谁占用内存最多，谁就被干掉。如果你对OOM Killer感兴趣的话，建议你阅读参考资料2中的文章。
 
-![img](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtZTdlYTYwMDE3ZTdiMmExYy5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA?x-oss-process=image/format,png)
+![img](https://pcc.huitogo.club/z0/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNzU3MjQtZTdlYTYwMDE3ZTdiMmExYy5wbmc_aW1hZ2VNb2dyMi9hdXRvLW9yaWVudC9zdHJpcHxpbWFnZVZpZXcyLzIvdy83MDAvZm9ybWF0L3dlYnA)
 
 当可用虚拟虚拟内存(包括交换空间)消耗到让整个操作系统面临风险时，就会产生`Out of memory:Kill process or sacrifice child`错误。在这种情况下，OOM Killer会选择“流氓进程”并杀死它。
 

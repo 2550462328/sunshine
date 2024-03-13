@@ -94,7 +94,7 @@ ViewResolver 结合 Model 和 View，来渲染视图，并写回给用户( 浏�
 
 再来补充一些SpringMVC的工作流程图
 
-![流程示意图](http://static.iocoder.cn/images/Spring/2022-02-21/01.png)
+![流程示意图](https://pcc.huitogo.club/z0/01.png)
 
 
 

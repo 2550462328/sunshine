@@ -73,7 +73,7 @@ NIO的选择器允许一个单独的线程来监视多个输入通道，你可�
 
 首先根据图来对比看
 
-![BIO 对比 NIO 对比 AIO](http://static.iocoder.cn/images/Netty/2017_10_24/02.png)
+![BIO 对比 NIO 对比 AIO](https://pcc.huitogo.club/z0/2024031290808898989.png)
 
 - 有一点要注意，虽然图中说 NIO 的性能一般，但是在绝大多数我们日常业务场景，NIO 和 AIO 的性能差距实际没这么大。在 Netty5 中，基于 AIO 改造和支持，最后发现，性能并没有想象中这么强悍，所以 Netty5 被废弃，而是继续保持 Netty4 为主版本，使用 NIO 为主。
 

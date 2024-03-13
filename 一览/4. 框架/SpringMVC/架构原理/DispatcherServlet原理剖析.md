@@ -2,7 +2,7 @@
 
 什么要介绍 Servlet 呢？原因不难理解，Spring MVC 是基于 Servlet 实现的。所以要分析 Spring MVC，首先应追根溯源，弄懂 Servlet。Servlet 是 J2EE 规范之一，在遵守该规范的前提下，我们可将 Web 应用部署在 Servlet 容器下。这样做的好处是什么呢？我觉得可使开发者聚焦业务逻辑，而不用去关心 HTTP 协议方面的事情。比如，普通的 HTTP 请求就是一段有格式的文本，服务器需要去解析这段文本才能知道用户请求的内容是什么。比如我对个人网站的 80 端口抓包，然后获取到的 HTTP 请求头如下：
 
-![img](https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15300969131789.jpg)
+![img](https://pcc.huitogo.club/z0/15300969131789.jpg)
 
 
 
@@ -16,7 +16,7 @@
 
 我们先来看看 Servlet 接口及其实现类结构，然后再进行更进一步的说明。
 
-![img](https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15300899315187.jpg)
+![img](https://pcc.huitogo.club/z0/15300899315187.jpg)
 
 ##### 2.1 Servlet 与 ServletConfig
 
@@ -226,7 +226,7 @@ protected void service(HttpServletRequest req, HttpServletResponse resp)
 
 DispatcherServlet 继承关系图如下：
 
-![img](https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15302319955704.jpg)
+![img](https://pcc.huitogo.club/z0/15302319955704.jpg)
 
 - ##### Aware
 
@@ -273,7 +273,7 @@ DispatcherServlet 主要的职责相信大家都比较清楚了，即协调各�
 
 DispatcherServlet流程图如下：
 
-![img](https://blog-pictures.oss-cn-shanghai.aliyuncs.com/15300766829012.jpg)
+![img](https://pcc.huitogo.club/z0/15300766829012.jpg)
 
 
 
@@ -449,10 +449,10 @@ protected void render(ModelAndView mv, HttpServletRequest request, HttpServletRe
 
 附上一些代码序列图：
 
-![代码序列图](http://static.iocoder.cn/images/Spring/2022-02-21/02.png)
+![代码序列图](https://pcc.huitogo.club/z0/123123511231233.png)
 
 
 
 流程示意图：
 
-![《流程示意图》](http://static.iocoder.cn/images/Spring/2022-02-21/03.png)
+![《流程示意图》](https://pcc.huitogo.club/z0/03.png)

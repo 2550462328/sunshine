@@ -60,7 +60,7 @@
 
 Mmap内存映射和普通标准IO操作的本质区别在于它并不需要将文件中的数据先拷贝至OS的内核IO缓冲区，而是可以直接将用户进程私有地址空间中的一块区域与文件对象建立映射关系，这样程序就好像可以直接从内存中完成对文件读/写操作一样。只有当缺页中断发生时，直接将文件从磁盘拷贝至用户态的进程空间内，只进行了一次数据拷贝。对于容量较大的文件来说（文件大小一般需要限制在1.5~2G以下），采用Mmap的方式其读/写的效率和性能都非常高。
 
-![img](https://upload-images.jianshu.io/upload_images/4325076-76cd8768f717a2bc.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/963/format/webp)
+![img](https://pcc.huitogo.club/z0/4325076-76cd8768f717a2bc.jpg)
 
 > 注：正因为需要使用内存映射机制，故RocketMQ的文件存储都使用定长结构来存储，方便一次将整个文件映射至内存。
 
@@ -88,7 +88,7 @@ PageCache是OS对文件的缓存，用于加速对文件的读写。一般来说
 2. **对于数据文件的写入**，OS会先写入至Cache内，随后通过异步的方式由pdflush内核线程将Cache内的数据刷盘至物理磁盘上。
     对于文件的顺序读写操作来说，读和写的区域都在OS的PageCache内，此时读写性能接近于内存。**RocketMQ的大致做法是**，将数据文件映射到OS的虚拟内存中（通过JDK NIO的MappedByteBuffer），写消息的时候首先写入PageCache，并通过异步刷盘的方式将消息批量的做持久化（同时也支持同步刷盘）；订阅消费消息时（对CommitLog操作是随机读取），由于PageCache的局部性热点原理且整体情况下还是从旧到新的有序读，因此大部分情况下消息还是可以直接从Page Cache中读取，不会产生太多的缺页（Page Fault）中断而从磁盘读取。
 
-![img](https://upload-images.jianshu.io/upload_images/4325076-9d8c5ba0c12538a6.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/703/format/webp)
+![img](https://pcc.huitogo.club/z0/4325076-9d8c5ba0c12538a6.jpg)
 
 PageCache机制也不是完全无缺点的，当遇到OS进行脏页回写，内存回收，内存swap等情况时，就会引起较大的消息读写延迟。
  对于这些情况，RocketMQ采用了多种优化技术，比如内存预分配，文件预热，mlock系统调用等，来保证在最大可能地发挥PageCache机制优点的同时，尽可能地减少其缺点带来的消息读写延迟。
@@ -107,7 +107,7 @@ PageCache机制也不是完全无缺点的，当遇到OS进行脏页回写，内
 
 预分配MappedFile的主要过程：
 
-![img](https:////upload-images.jianshu.io/upload_images/4325076-e116310ab99a7792.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1109/format/webp)
+![img](https://pcc.huitogo.club/z0/t1235125123.webp)
 
 ##### 3.2 文件预热&&mlock系统调用
 

@@ -64,12 +64,12 @@ Ribbon作为后端负载均衡器，比Nginx更注重的是承担并发而不是
 
 这里我们希望调用的服务地址是`http://user-service/user/`
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190407154202955.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MzM0MTM1,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://pcc.huitogo.club/z0/20190407154202955.png)
 
 
 
 execute方法，主要是`#getLoadBalancer(serviceId)`
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190407154302110.png)
+![在这里插入图片描述](https://pcc.huitogo.club/z0/20190407154302110.png)
 
 - 这里已经将我们访问的地址变成了127.0.0.1:8081

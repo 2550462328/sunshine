@@ -8,4 +8,4 @@ BeanFactory ，就像一个包含 Bean 集合的工厂类。它会在客户端�
 
 BeanFactory的全类图
 
-![image-20240228102522678](C:\Users\huizhang43\AppData\Roaming\Typora\typora-user-images\image-20240228102522678.png)
+![image-20240228102522678](https://pcc.huitogo.club/z0/image-20240228102522678.png)

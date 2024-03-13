@@ -70,8 +70,8 @@ Sentinel 可以针对不同的调用关系，以不同的运行指标（如 QPS�
 Sentinel 支持多样化的流量整形策略，在 QPS 过高的时候可以自动将流量调整成合适的形状。常用的有：
 
 - **直接拒绝模式**：即超出的请求直接拒绝。
-- **慢启动预热模式**：当流量激增的时候，控制流量通过的速率，让通过的流量缓慢增加，在一定时间内逐渐增加到阈值上限，给冷系统一个预热的时间，避免冷系统被压垮。 ![Slow-Start-Preheating-Mode](https://doocs.gitee.io/advanced-java/docs/high-availability/images/Slow-Start-Preheating-Mode.jpg)
-- **匀速器模式**：利用 Leaky Bucket 算法实现的匀速模式，严格控制了请求通过的时间间隔，同时堆积的请求将会排队，超过超时时长的请求直接被拒绝。Sentinel 还支持基于调用关系的限流，包括基于调用方限流、基于调用链入口限流、关联流量限流等，依托于 Sentinel 强大的调用链路统计信息，可以提供精准的不同维度的限流。 ![Homogenizer-mode](https://doocs.gitee.io/advanced-java/docs/high-availability/images/Homogenizer-mode.jpg)
+- **慢启动预热模式**：当流量激增的时候，控制流量通过的速率，让通过的流量缓慢增加，在一定时间内逐渐增加到阈值上限，给冷系统一个预热的时间，避免冷系统被压垮。 ![Slow-Start-Preheating-Mode](https://pcc.huitogo.club/z0/Slow-Start-Preheating-Mode.jpg)
+- **匀速器模式**：利用 Leaky Bucket 算法实现的匀速模式，严格控制了请求通过的时间间隔，同时堆积的请求将会排队，超过超时时长的请求直接被拒绝。Sentinel 还支持基于调用关系的限流，包括基于调用方限流、基于调用链入口限流、关联流量限流等，依托于 Sentinel 强大的调用链路统计信息，可以提供精准的不同维度的限流。 ![Homogenizer-mode](https://pcc.huitogo.club/z0/Homogenizer-mode.jpg)
 
 目前 Sentinel 对异步调用链路的支持还不是很好，后续版本会着重改善支持异步调用。
 
@@ -81,7 +81,7 @@ Sentinel 支持多样化的流量整形策略，在 QPS 过高的时候可以自
 
 Sentinel 对系统的维度提供保护，负载保护算法借鉴了 TCP BBR 的思想。当系统负载较高的时候，如果仍持续让请求进入，可能会导致系统崩溃，无法响应。在集群环境下，网络负载均衡会把本应这台机器承载的流量转发到其它的机器上去。如果这个时候其它的机器也处在一个边缘状态的时候，这个增加的流量就会导致这台机器也崩溃，最后导致整个集群不可用。针对这个情况，Sentinel 提供了对应的保护机制，让系统的入口流量和系统的负载达到一个平衡，保证系统在能力范围之内处理最多的请求。
 
-![BRP](https://doocs.gitee.io/advanced-java/docs/high-availability/images/BRP.jpg)
+![BRP](https://pcc.huitogo.club/z0/BRP.jpg)
 
 
 
@@ -91,7 +91,7 @@ Sentinel 提供 HTTP API 用于获取实时的监控信息，如调用链路统�
 
 Sentinel 控制台（Dashboard）提供了机器发现、配置规则、查看实时监控、查看调用链路信息等功能，使得用户可以非常方便地去查看监控和进行配置。
 
-![Sentinel-Dashboard](https://doocs.gitee.io/advanced-java/docs/high-availability/images/Sentinel-Dashboard.jpg)
+![Sentinel-Dashboard](https://pcc.huitogo.club/z0/Sentinel-Dashboard.jpg)
 
 
 

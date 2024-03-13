@@ -24,7 +24,7 @@ Hystrix 通过将依赖服务进行**资源隔离**，进而阻止某个依赖�
 
 调用服务 C，只需要 20ms，现在因为服务 C 故障了，比如延迟，或者挂了，此时线程会 hang 住 2s 左右。40 个线程全部被卡住，由于请求不断涌入，其它的线程也用来调用服务 C，同样也会被卡住。这样导致服务 B 的线程资源被耗尽，无法接收新的请求，甚至可能因为大量线程不断的运转，导致自己宕机。这种影响势必会蔓延至服务 A，导致服务 A 也跟着挂掉。
 
-![service-invoke-road](https://doocs.gitee.io/advanced-java/docs/high-availability/images/service-invoke-road.png)
+![service-invoke-road](https://pcc.huitogo.club/z0/service-invoke-road.png)
 
 Hystrix 可以对其进行资源隔离，比如限制服务 B 只有 40 个线程调用服务 C。当此 40 个线程被 hang 住时，其它 60 个线程依然能正常调用工作。从而确保整个系统不会被拖垮。
 

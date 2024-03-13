@@ -41,7 +41,7 @@ ApplicationContext 可以称之为 **“高级容器”**。因为他比 BeanFac
 
 当我们创建好容器，就会使用 getBean 方法，获取 Bean，而 getBean 的流程如下：
 
-![img](https://static.iocoder.cn/97f12ec77b4136b606d291be00e9dd7c)
+![img](https://pcc.huitogo.club/z0/97f12ec77b4136b606d291be00e9dd7c)
 
 从图中可以看出，getBean 的操作都是在低级容器里操作的。其中有个递归操作，这个是什么意思呢？
 

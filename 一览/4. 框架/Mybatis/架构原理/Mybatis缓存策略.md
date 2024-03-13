@@ -18,11 +18,11 @@ Mybatis缓存机制示意图
 
 具体实现类的类关系图如下图所示：
 
-![img](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2018a/d76ec5fe.jpg)
+![img](https://pcc.huitogo.club/z0/d76ec5fe.jpg)
 
 一级缓存执行的时序图：
 
-![img](https://awps-assets.meituan.net/mit-x/blog-images-bundle-2018a/bb851700.png)
+![img](https://pcc.huitogo.club/z0/bb851700.png)
 
 总结：
 

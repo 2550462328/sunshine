@@ -1,12 +1,12 @@
 dubbo启动后会在zookeeper下生成一个dubbo的子目录，dubbo下面是当前的接口名称
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20201012175808808.png#pic_center)
+![在这里插入图片描述](https://pcc.huitogo.club/z0/20201012175808808.png)
 
 
 
 下面，我们先来看下 《Dubbo 用户指南 —— zookeeper 注册中心》文档，内容如下：
 
-![流程](http://static.iocoder.cn/images/Dubbo/2018_08_04/01.png)
+![流程](https://pcc.huitogo.club/z0/202403128990911.png)
 
 流程说明：
 

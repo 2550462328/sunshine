@@ -14,7 +14,7 @@ Feign 是受到 Retrofit、JAXRS-2.0 和 WebSocket 启发的 Java 客户端联�
 
 **Feign的工作原理：**
 
-![Feign 原理](http://static.iocoder.cn/6650aa32de0def76db0e4c5228619aef)
+![Feign 原理](https://pcc.huitogo.club/z0/6650aa32de0def76db0e4c5228619aef)
 
 - **Feign的一个关键机制就是使用了动态代理**
 - 首先，如果你对某个接口定义了 `@FeignClient` 注解，Feign 就会针对这个接口创建一个动态代理。

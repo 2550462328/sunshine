@@ -1,6 +1,6 @@
 Ribbon的工作流程图如下：
 
-![Ribbon](http://static.iocoder.cn/950702ef9d35f23b5081c341c1de329a)
+![Ribbon](https://pcc.huitogo.club/z0/950702ef9d35f23b5081c341c1de329a)
 
 - 作用：主要提供客户侧的软件负载均衡算法。
 - 简介：Spring Cloud Ribbon 是一个基于 HTTP 和 TCP 的客户端负载均衡工具，它基于 Netflix Ribbon 实现。通过 Spring Cloud 的封装，可以让我们轻松地将面向服务的 REST 模版请求自动转换成客户端负载均衡的服务调用。
@@ -10,7 +10,7 @@ Ribbon的工作流程图如下：
 
 Ribbon 原理，整体如下图：
 
-![Ribbon 原理](http://static.iocoder.cn/36465fd7d91b3a4aeb3b28c3777649e6)
+![Ribbon 原理](https://pcc.huitogo.club/z0/36465fd7d91b3a4aeb3b28c3777649e6)
 
 - 首先，Ribbon 会从 Eureka Client 里获取到对应的服务列表。
 - 然后，Ribbon 使用负载均衡算法获得使用的服务。

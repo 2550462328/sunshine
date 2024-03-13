@@ -2,7 +2,7 @@
 
 另外通过注册中心可灵活改变授权方式，而不需修改或升级提供者。
 
-![认证流程](http://static.iocoder.cn/images/Dubbo/2018_11_19/01.png)
+![认证流程](https://pcc.huitogo.club/z0/20240312123123.png)
 
 
 
@@ -35,7 +35,7 @@ if (!ConfigUtils.isEmpty(token)) {
 
 RpcInvocation 在创建时，“**自动**”带上 Token ，如下图所示：
 
-![RpcInvocation](http://static.iocoder.cn/images/Dubbo/2018_11_19/02.png)
+![RpcInvocation](https://pcc.huitogo.club/z0/202403124125123.png)
 
 
 

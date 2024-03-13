@@ -254,7 +254,7 @@ curl http://www.locatest.com/aaa/regexmatch  ❌ 404
 curl http://www.locatest.com/bbbregexmatch   ❌ 404
 ```
 
-可以看到这次 curl http://www.locatest.com/REGEXMATCH 是可以匹配上的，说明 ~* 确实是不区分大小写的。
+可以看到这次 curl `http://www.locatest.com/REGEXMATCH` 是可以匹配上的，说明 ~* 确实是不区分大小写的。
 
 
 

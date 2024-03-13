@@ -1,1 +1,1 @@
-![Spring Cloud Sleuth 原理](http://static.iocoder.cn/43f306a2aa7bc27015d3baa7832d13b6)
+![Spring Cloud Sleuth 原理](https://pcc.huitogo.club/z0/43f306a2aa7bc27015d3baa7832d13b6)

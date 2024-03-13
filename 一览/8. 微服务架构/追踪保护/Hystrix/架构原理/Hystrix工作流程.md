@@ -1,12 +1,12 @@
 Hystrix工作流程图一：
 
-![Hystrix 原理](http://static.iocoder.cn/8848af2a2e093d0421d1c7113dedefc1)
+![Hystrix 原理](https://pcc.huitogo.club/z0/8848af2a2e093d0421d1c7113dedefc1)
 
 
 
 Hystrix工作流程图二：
 
-![hystrix-process](https://doocs.gitee.io/advanced-java/docs/high-availability/images/new-hystrix-process.jpg)
+![hystrix-process](https://pcc.huitogo.club/z0/new-hystrix-process.jpg)
 
 
 

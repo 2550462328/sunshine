@@ -44,9 +44,7 @@ LVS 的数据转发流程是 LVS 设计 的核心部分，如下所述，如图�
 
 #### 3. LVS NAT 模式
 
-LVS NAT ( Network Address Translation ）即网络地址转换模式，具体的实现流程如 图所示 。
-
-
+LVS NAT ( Network Address Translation ）即网络地址转换模式，具体的实现流程如图所示 。
 
 ![img](http://pcc.huitogo.club/7ddd2f8ce0c5d72664726533788655d5)
 

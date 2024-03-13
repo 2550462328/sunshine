@@ -56,8 +56,6 @@ WorkerGroup 为一个事件循环组， 中包含多个事件循环 (NioEventLoo
 
 一个线程负责接受请求,一组NIO线程处理IO操作。
 
-
-
 ![img](http://pcc.huitogo.club/4f6fa7018158564a0a3753334dba7be8)
 
 

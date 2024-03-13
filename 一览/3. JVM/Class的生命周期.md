@@ -1,7 +1,5 @@
 类的生命周期如下图：
 
-
-
 ![img](http://pcc.huitogo.club/78118e028b23915da98b1e1df022c412)
 
 

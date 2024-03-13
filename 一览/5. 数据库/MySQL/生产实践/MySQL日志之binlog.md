@@ -9,7 +9,7 @@
 - 数据恢复：`MySQL`可以通过`bin log`恢复某一时刻的误操作的数据，是`DBA`常打交道的日志。
 - 数据复制：`MySQL`的数据备份、集群高可用、读写分离都是基于`bin log`的重放实现的。
 
-![img](https://pic2.zhimg.com/80/v2-0bd2110f68d8ccf2b92a38569fcfde19_720w.webp)
+![img](https://pcc.huitogo.club/z0/v2-0bd2110f68d8ccf2b92a38569fcfde19_720w.webp)
 
 
 

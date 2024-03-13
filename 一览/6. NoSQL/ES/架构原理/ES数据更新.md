@@ -8,7 +8,7 @@ ElasticSearch 的写操作主要包括索引的创建和删除，以及文档的
 
 ElasticSearch文档的写入流程如图所示：
 
-![es-write](https://doocs.gitee.io/advanced-java/docs/high-concurrency/images/es-write.png)
+![es-write](https://pcc.huitogo.club/z0/es-write.png)
 
 1. 客户端选择一个 node 发送请求过去，这个 node 就是 `coordinating node` （协调节点）。
 
@@ -44,7 +44,7 @@ quorum = int ((primary+number_of_replicas) /2) +1
 
 ES写入磁盘的数据流程：
 
-![es-write-detail](https://doocs.gitee.io/advanced-java/docs/high-concurrency/images/es-write-detail.png)
+![es-write-detail](https://pcc.huitogo.club/z0/es-write-detail.png)
 
 **总结：ES是近实时搜索的，延迟为1s；可能会丢失5s内的数据**
 

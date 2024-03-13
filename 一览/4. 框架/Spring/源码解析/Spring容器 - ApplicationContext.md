@@ -19,7 +19,7 @@ ApplicationContext 接口扩展了 BeanFactory 接口，它在 BeanFactory 基�
 
 ApplicationContext的全类图
 
-![image-20240228102228707](C:\Users\huizhang43\AppData\Roaming\Typora\typora-user-images\image-20240228102228707.png)
+![image-20240228102228707](https://pcc.huitogo.club/z0/image-20240228102228707.png)
 
 总的来说生产环境，通常我们都是使用ApplicationContext
 
@@ -29,7 +29,7 @@ ApplicationContext的全类图
 
 下图是 ApplicationContext 结构类图：
 
-![ApplicationContext 结构类图](http://static.iocoder.cn/3a0321713096156d42661f2df11a93c2)
+![ApplicationContext 结构类图](https://pcc.huitogo.club/z0/3a0321713096156d42661f2df11a93c2)
 
 - **BeanFactory**：Spring 管理 Bean 的顶层接口，我们可以认为他是一个简易版的 Spring 容器。ApplicationContext 继承 BeanFactory 的两个子类：HierarchicalBeanFactory 和 ListableBeanFactory。HierarchicalBeanFactory 是一个具有层级关系的 BeanFactory，拥有属性 `parentBeanFactory` 。ListableBeanFactory 实现了枚举方法可以列举出当前 BeanFactory 中所有的 bean 对象而不必根据 name 一个一个的获取。
 - **ApplicationEventPublisher**：用于封装事件发布功能的接口，向事件监听器（Listener）发送事件消息。
@@ -160,7 +160,7 @@ StudentService studentService = (StudentService)ac.getBean("studentService");
 
 下图是 ClassPathXmlApplicationContext 的结构类图：
 
-![ClassPathXmlApplicationContext 的类图](http://static.iocoder.cn/dde0bf4ae9014ec73c80f4c45045850a)
+![ClassPathXmlApplicationContext 的类图](https://pcc.huitogo.club/z0/dde0bf4ae9014ec73c80f4c45045850a)
 
 
 

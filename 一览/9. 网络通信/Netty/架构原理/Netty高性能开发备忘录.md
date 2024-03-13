@@ -1,6 +1,6 @@
-## 1. 连接篇
+#### 1. 连接篇
 
-### 1.1 Netty Native
+##### 1.1 Netty Native
 
 Netty Native用C++编写JNI调用的Socket Transport，是由Twitter将Tomcat Native的移植过来，现在还时不时和汤姆家同步一下代码。
 
@@ -24,7 +24,7 @@ Netty Native用C++编写JNI调用的Socket Transport，是由Twitter将Tomcat Na
 
 
 
-### 1.2 异步连接，异步传输，告别Commons Pool
+##### 1.2 异步连接，异步传输，告别Commons Pool
 
 异步化最牛头不对马嘴的事情就是，给它配一个类似Commons Pool这样，有借有还的连接池。
 
@@ -38,7 +38,7 @@ Netty4.0.28开始也有ChannelPool了，供需要独占Channel的场景如HTTP1.
 
 
 
-### 1.3 最佳连接数：一条连接打天下？还有传说中的海量连接？
+##### 1.3 最佳连接数：一条连接打天下？还有传说中的海量连接？
 
 NIO这么神奇，有一种做法是只建一条连接，如SpyMemcached。还有一种是既然你能支持海量连接，几千几万的，那我就无节制的可劲的建了。
 
@@ -58,7 +58,7 @@ NIO这么神奇，有一种做法是只建一条连接，如SpyMemcached。还�
 
 
 
-### 1.4 Channel参数设定
+##### 1.4 Channel参数设定
 
 - 1.4.1 TCP/Socket参数
 
@@ -74,13 +74,13 @@ WRITE_BUFFER_HIGH_WATER_MARK 与 WRITE_BUFFER_LOW_WATER_MARK是两个流控的�
 
 
 
-## 2. 线程篇
+#### 2. 线程篇
 
 基本知识：《Netty in Action》中文版—第七章 EventLoop和线程模型
 
 
 
-### 2.1 WorkerGroup 与 Boss Group
+##### 2.1 WorkerGroup 与 Boss Group
 
 大家都知道，Boss Group用于服务端处理建立连接的请求，WorkGroup用于处理I/O。
 
@@ -90,7 +90,7 @@ EventLoopGroup的默认大小都是是2倍的CPU核数，但这并不是一个�
 
 
 
-### 2.2 上下游线程的绑定
+##### 2.2 上下游线程的绑定
 
 在服务化的应用里，一般处理上游请求的同时，也会向多个下游的服务集群发送请求，但调优指南里都说，尽量，全部重用同一个EventLoopGroup。否则，处理上游请求的线程，就要把后续任务以Runnable的方式，提交到下游Channel的处理线程。
 
@@ -100,7 +100,7 @@ EventLoopGroup的默认大小都是是2倍的CPU核数，但这并不是一个�
 
 
 
-### 2.3 业务线程池
+##### 2.3 业务线程池
 
 Netty线程的数量一般固定且较少，所以很怕线程被堵塞，比如同步的数据库查询，比如下游的服务调用（又来罗嗦，future.get()式的异步在执行future.get()时还是堵住当前线程的啊）。
 
@@ -108,7 +108,7 @@ Netty线程的数量一般固定且较少，所以很怕线程被堵塞，比如
 
 
 
-### 2.4 定时任务
+##### 2.4 定时任务
 
 像发送超时控制之类的一次性任务，不要使用JDK的ScheduledExecutorService，而是如下：
 
@@ -122,7 +122,7 @@ Netty线程的数量一般固定且较少，所以很怕线程被堵塞，比如
 
 
 
-### 2.5 快速复习一下Netty的高性能线程池
+##### 2.5 快速复习一下Netty的高性能线程池
 
 Netty的线程池理念有点像ForkJoinPool，都不是一个线程大池子并发等待一条任务队列，而是每条线程自己一个任务队列，怎么做的？建了N个只有一条线程的线程池。
 
@@ -140,9 +140,9 @@ Netty的线程池理念有点像ForkJoinPool，都不是一个线程大池子并
 
 
 
-## 3. 内存篇
+#### 3. 内存篇
 
-### 3.1 堆外内存池
+##### 3.1 堆外内存池
 
 堆外内存是Netty被说得最多的部分，网卡内核态与应用用户态之间零复制啊，无GC啊，不受堆内存大小限制啊，不重复。
 
@@ -166,7 +166,7 @@ Netty的另一个得意设计是对象可以在线程内无锁的被回收重用
 
 
 
-### 3.2 避免复制：CompositeByteBuff, slice(), duplicate()
+##### 3.2 避免复制：CompositeByteBuff, slice(), duplicate()
 
 尽量，尽量不要进行ByteBuf内容复制。
 
@@ -181,7 +181,7 @@ Bytebuf newBuf = oldBuf.duplicate().retain();
 
 
 
-### 3.3 避免扩容: ByteBuf的大小预估与AdaptiveRecvByteBufAllocator
+##### 3.3 避免扩容: ByteBuf的大小预估与AdaptiveRecvByteBufAllocator
 
 ByteBuf如果一开始申请的不足，到极限时会智能的扩容，但也和Java一样，需要重新申请两倍的内存，然后把旧的内容复制过去，一听就是个很消耗的动作，因此，反正是堆外内存池，一开始还是给多一点吧。
 
@@ -191,7 +191,7 @@ ByteBuf如果一开始申请的不足，到极限时会智能的扩容，但也�
 
 
 
-### 3.4 烦人的rangeChecking
+##### 3.4 烦人的rangeChecking
 
 Norman Maurer说，如果你要搜索某个Byte是否存在，请用 byteBuf.forEachByte(ByteProcessor processor), 比循环的遍历地调用byteBuf.readByte()要快得多。原因无它，ByteBuf有Java其他集合同样的rangeChecking。
 
@@ -199,7 +199,7 @@ Norman Maurer说，如果你要搜索某个Byte是否存在，请用 byteBuf.for
 
 
 
-### 3.5 readInt()，不要readBytes(bytes[],0,4)
+##### 3.5 readInt()，不要readBytes(bytes[],0,4)
 
 比如Thrift，它会做一层封装，先用byteBuf.readBytes(bytes,0,4)读取4个字节的byte[]，再自己转成int。
 
@@ -207,7 +207,7 @@ Norman Maurer说，如果你要搜索某个Byte是否存在，请用 byteBuf.for
 
 
 
-### 3.6 对String说不的 ASCIIString
+##### 3.6 对String说不的 ASCIIString
 
 Netty收到的bytes[]，大部分时候最终都要变回String。但String的内部是char[]啊，出入都要经过CharsetEncoder进行转换成byte[]，既浪费CPU，又浪费内存。
 
@@ -217,7 +217,7 @@ ByteBufUtils类提供了写入UTF-8和ASCII的优化，不需要从String编码�
 
 
 
-## 4. 工具类篇
+#### 4. 工具类篇
 
 Netty 为了高效编程，或写或借，搞了一些高效的工具类，在自己的应用里同样可以借用一下哦。
 
@@ -225,7 +225,7 @@ Netty自己有一篇Using as a generic library 介绍了其中的一些。本文
 
 
 
-### 4.1 FastThreadLocal
+##### 4.1 FastThreadLocal
 
 Netty威武，居然太岁头上动土，搞出个比JDK的ThreadLocal还快的ThreadLocal。详见Netty精粹之设计更快的ThreadLocal
 
@@ -235,7 +235,7 @@ JDK的ThreadLocal，实现原理是Thread对象里有个HashMap式的数组，�
 
 
 
-### 4.2 移植JDK8的宝贝到JDK7
+##### 4.2 移植JDK8的宝贝到JDK7
 
 JDK8重写了ConcurrentHashMap，原来的Load Factor，Current Level都没有作用了。
 
@@ -247,7 +247,7 @@ Netty把这些类都复制黏贴了一份，封装在 PlatformDependent里，根
 
 
 
-### 4.3 其他宝贝
+##### 4.3 其他宝贝
 
 - 4.3.1 ThreadLocal的StringBuilder
 
@@ -270,7 +270,7 @@ Netty把这些类都复制黏贴了一份，封装在 PlatformDependent里，根
 
 
 
-## 5. 其他零碎篇
+#### 5. 其他零碎篇
 
 主要来自Norman Maurer的文章：
 

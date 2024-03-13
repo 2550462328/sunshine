@@ -14,7 +14,7 @@ Dubbo 目前提供三种实现：
 
 在源码上主要有CacheFactory、Cache、CacheFilter，其中CacheFactory和CacheFilter是可扩展的
 
-![类图](http://static.iocoder.cn/images/Dubbo/2018_11_21/01.png)
+![类图](https://pcc.huitogo.club/z0/20240312734123.png)
 
 
 

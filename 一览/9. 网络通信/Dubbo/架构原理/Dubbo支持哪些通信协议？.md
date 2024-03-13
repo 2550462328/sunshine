@@ -8,11 +8,11 @@
 
 长连接，通俗点说，就是建立连接过后可以持续发送请求，无须再建立连接。
 
-![dubbo-keep-connection](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/dubbo-keep-connection.png)
+![dubbo-keep-connection](https://pcc.huitogo.club/z0/dubbo-keep-connection.png)
 
 而短连接，每次要发送请求之前，需要先重新建立一次连接。
 
-![dubbo-not-keep-connection](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/dubbo-not-keep-connection.png)
+![dubbo-not-keep-connection](https://pcc.huitogo.club/z0/dubbo-not-keep-connection.png)
 
 - **rest 协议** `rest://`
 

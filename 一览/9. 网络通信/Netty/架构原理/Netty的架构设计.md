@@ -1,6 +1,6 @@
 #### 1. 逻辑架构
 
-![Netty 逻辑架构图](http://static.iocoder.cn/85d98e3cb0e6e39f80d02234e039a4dd)
+![Netty 逻辑架构图](https://pcc.huitogo.club/z0/85d98e3cb0e6e39f80d02234e039a4dd)
 
 注意：这个图是自下向上看。
 

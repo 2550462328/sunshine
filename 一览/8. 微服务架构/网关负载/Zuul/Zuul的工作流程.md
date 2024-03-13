@@ -1,4 +1,4 @@
-![Zuul 原理](http://static.iocoder.cn/20944a735d250d7d3338fe9deea179f8)
+![Zuul 原理](https://pcc.huitogo.club/z0/20944a735d250d7d3338fe9deea179f8)
 
 
 

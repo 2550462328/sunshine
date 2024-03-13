@@ -1,6 +1,6 @@
 信号量的资源隔离只是起到一个开关的作用，比如，服务 A 的信号量大小为 10，那么就是说它同时只允许有 10 个 tomcat 线程来访问服务 A，其它的请求都会被拒绝，从而达到资源隔离和限流保护的作用。
 
-![hystrix-semphore](https://doocs.gitee.io/advanced-java/docs/high-availability/images/hystrix-semphore.png)
+![hystrix-semphore](https://pcc.huitogo.club/z0/hystrix-semphore.png)
 
 
 
@@ -10,7 +10,7 @@
 
 线程池隔离技术，是用 Hystrix 自己的线程去执行调用；而信号量隔离技术，是直接让 tomcat 线程去调用依赖服务。信号量隔离，只是一道关卡，信号量有多少，就允许多少个 tomcat 线程通过它，然后去执行。
 
-![hystrix-semphore-thread-pool](https://doocs.gitee.io/advanced-java/docs/high-availability/images/hystrix-semphore-thread-pool.png)
+![hystrix-semphore-thread-pool](https://pcc.huitogo.club/z0/hystrix-semphore-thread-pool.png)
 
 **两者比较：**
 

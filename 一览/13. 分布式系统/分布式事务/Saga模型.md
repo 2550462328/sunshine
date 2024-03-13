@@ -8,7 +8,7 @@
 
 业务流程中每个参与者都提交本地事务，若某一个参与者失败，则补偿前面已经成功的参与者。下图左侧是正常的事务流程，当执行到 T3 时发生了错误，则开始执行右边的事务补偿流程，反向执行 T3、T2、T1 的补偿服务 C3、C2、C1，将 T3、T2、T1 已经修改的数据补偿掉。
 
-![distributed-transacion-TCC](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/distributed-transaction-saga.png)
+![distributed-transacion-TCC](https://pcc.huitogo.club/z0/distributed-transaction-saga.png)
 
 
 

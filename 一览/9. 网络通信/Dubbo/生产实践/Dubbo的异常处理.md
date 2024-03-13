@@ -2,7 +2,7 @@
 
 在dubbo官方文档的服务化最佳实践中,推荐的处理方式如下:
 
-![img](https://img-blog.csdn.net/20161228230546795?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXEzMTU3Mzc1NDY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+![img](https://pcc.huitogo.club/z0/20161228230546795)
 
 
 
@@ -196,7 +196,7 @@ com.alibaba.com.caucho.hessian.io.HessianFieldException: org.apache.commons.lang
 
 是的.把源码改一下就OK了.如下图:
 
-![img](https://img-blog.csdn.net/20161229210802425?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXEzMTU3Mzc1NDY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+![img](https://pcc.huitogo.club/z0/20161229210802425)
 
 在异常处理这里,加上自定义异常处理的代码.
 

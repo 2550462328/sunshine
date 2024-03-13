@@ -6,7 +6,7 @@
 
 Kafka所采用的提交日志就是以追加的方式写入分区的，就是说单个分区的写入是可以保证顺序的，没有删除和更新操作，因此避免了随机写入。另外，从分区读取数据的时候也是按顺序读取的，避免了随机读取。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/TuYNUkbmq5fiago15CyoUTZBwQ2D3nibNLYe2jicqD1rzOTS3cg2I3rI4BOJNsuVgygxzq0xaQKjVpAd92Aetx4UA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![图片](https://pcc.huitogo.club/z0/640)
 
 
 
@@ -33,13 +33,13 @@ Kafka所采用的提交日志就是以追加的方式写入分区的，就是说
 3. 应用程序将数据从用户空间的缓冲区再写回到内核空间的socket缓冲区中。
 4. 操作系统将socket缓冲区中的数据拷贝到NIC缓冲区中，然后通过网络发送给客户端。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_png/TuYNUkbmq5fiago15CyoUTZBwQ2D3nibNLaumomSXjexER3xFEo9vtDqLne0Lx2A8WoYeBgzf3YSClkSjraax9CQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![图片](https://pcc.huitogo.club/z0/12312312413512.png)
 
 
 
 从图中可以看到，数据在内核空间和用户空间之间穿梭了两次，那么能否避免这个多余的过程呢？当然可以，Kafka使用了零拷贝技术，也就是直接将数据从内核空间的读缓冲区直接拷贝到内核空间的socket缓冲区，然后再写入到NIC缓冲区，避免了在内核空间和用户空间之间穿梭。
 
-![图片](https://mmbiz.qpic.cn/mmbiz_jpg/TuYNUkbmq5fiago15CyoUTZBwQ2D3nibNLFllA4wBMtZGZbZHL0B4wu6vdibseSEhh7PrtucRULH5VhZia8UEnwBow/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+![图片](https://pcc.huitogo.club/z0/223124123.jfif)
 
 
 

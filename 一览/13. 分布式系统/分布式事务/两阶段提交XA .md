@@ -77,4 +77,4 @@ Java中 的 `javax.transaction.xa.XAResource` 定义了 XA 接口，它依赖数
 
 如果你要操作别人的服务的库，你必须是通过**调用别的服务的接口**来实现，绝对不允许交叉访问别人的数据库。
 
-![distributed-transacion-XA](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/distributed-transaction-XA.png)
+![distributed-transacion-XA](https://pcc.huitogo.club/z0/distributed-transaction-XA.png)

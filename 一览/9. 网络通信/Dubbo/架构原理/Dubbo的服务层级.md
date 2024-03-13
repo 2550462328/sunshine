@@ -1,8 +1,4 @@
----
-
----
-
-![整体设计](http://static.iocoder.cn/images/Dubbo/2018_03_01/01.png)
+![整体设计](https://pcc.huitogo.club/z0/2024031251231.png)
 
 **图例说明**
 

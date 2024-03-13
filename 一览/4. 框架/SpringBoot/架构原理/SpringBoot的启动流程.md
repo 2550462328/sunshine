@@ -76,7 +76,7 @@ public ConfigurableApplicationContext run(String... args) {
 
 SpringBoot启动流程图：
 
-![spring_running.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6ba8bf5c8177430b8f462f35948d1c74~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+![spring_running.png](https://pcc.huitogo.club/z0/6ba8bf5c8177430b8f462f35948d1c74~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp)
 
 
 

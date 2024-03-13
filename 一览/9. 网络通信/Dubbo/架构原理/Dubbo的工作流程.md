@@ -1,6 +1,6 @@
 #### 1. 功能组件
 
-![图1](https://img-blog.csdnimg.cn/20201011011947309.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTAyOTI4Ng==,size_16,color_FFFFFF,t_70#pic_center)
+![图1](https://pcc.huitogo.club/z0/20201011011947309.png)
 
 其中各组件功能如下：
 
@@ -28,7 +28,7 @@
 
 #### 2. 组件交互
 
-![详细调用图](http://static.iocoder.cn/images/Dubbo/2017_10_24/01.png)
+![详细调用图](https://pcc.huitogo.club/z0/202403126123123.png)
 
 - 注意，图中的【代理】指的是 **proxy 代理服务层**，和 Consumer 或 Provider 在同一进程中。
 
@@ -59,13 +59,13 @@
 
 大概的总结流程图：
 
-![image-20240227113052499](C:\Users\huizhang43\AppData\Roaming\Typora\typora-user-images\image-20240227113052499.png)
+![image-20240227113052499](https://pcc.huitogo.club/z0/image-20240227113052499.png)
 
 
 
 #### 3. 服务链路调用
 
-<img src="https://img-blog.csdnimg.cn/20201011151807739.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTAyOTI4Ng==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述" style="zoom: 50%;" />
+<img src="https://pcc.huitogo.club/z0/20201011151807739.png" alt="在这里插入图片描述" style="zoom: 50%;" />
 
 > 其中**淡绿色**代表了 服务生产者的范围；**淡蓝色** 代表了服务消费者的范围；**红色箭头**代表了调用的方向
 >

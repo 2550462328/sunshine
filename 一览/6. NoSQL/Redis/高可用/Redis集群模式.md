@@ -139,7 +139,7 @@ Redis cluster，主要是针对**海量数据+高并发+高可用**的场景。R
 
 Redis 维护集群元数据采用 `gossip` 协议，所有节点都持有一份元数据，不同的节点如果出现了元数据的变更，就不断将元数据发送给其它的节点，让其它节点也进行元数据的变更。
 
-![Redis-gossip](https://doocs.gitee.io/advanced-java/docs/high-concurrency/images/redis-gossip.png)
+![Redis-gossip](https://pcc.huitogo.club/z0/redis-gossip.png)
 
 
 

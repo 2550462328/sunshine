@@ -116,7 +116,7 @@ Redission还有公平锁的实现，对于公平锁其利用了list结构和hash
 5. 要是锁建立失败了，那么就依次之前建立过的锁删除；
 6. 只要别人建立了一把分布式锁，你就得**不断轮询去尝试获取锁**。
 
-![redis-redlock](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/redis-redlock.png)
+![redis-redlock](https://pcc.huitogo.club/z0/redis-redlock.png)
 
 虽然说RedLock算法可以解决单点Redis分布式锁的安全性问题，但如果集群中有节点发生崩溃重启，还是会锁的安全性有影响的。具体出现问题的场景如下：
 

@@ -47,7 +47,7 @@ TCC协议系统交互过程如下
 
 下面对TCC模式下，A账户往B账户汇款100元为例子，对业务的改造进行详细的分析：
 
-![img](http://static.iocoder.cn/4da5bc0df774ef90e97c6358eb7e632f)
+![img](https://pcc.huitogo.club/z0/4da5bc0df774ef90e97c6358eb7e632f)
 
 - 汇款服务和收款服务分别需要实现，Try-Confirm-Cancel 接口，并在业务初始化阶段将其注入到 TCC 事务管理器中。
 
@@ -107,4 +107,4 @@ TCC协议系统交互过程如下
 
 但是说实话，一般尽量别这么搞，自己手写回滚逻辑，或者是补偿逻辑，实在太恶心了，那个业务代码是很难维护的。
 
-![distributed-transacion-TCC](https://doocs.gitee.io/advanced-java/docs/distributed-system/images/distributed-transaction-TCC.png)
+![distributed-transacion-TCC](https://pcc.huitogo.club/z0/distributed-transaction-TCC.png)

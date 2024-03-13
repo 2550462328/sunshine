@@ -126,10 +126,10 @@ public abstract class SpringFactoriesLoader {
 
 所以文件中一般为如下图这种一对多的类名集合，获取到这些实现类的类名后，loadFactoryNames方法返回类名集合，方法调用方得到这些集合后，再通过**反射**获取这些类的类对象、构造方法，最终生成实例。
 
-![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/8/6/1650e0c6e28a0407~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png)
+![img](https://pcc.huitogo.club/z0/1650e0c6e28a0407~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png)
 
 
 
 下图有助于我们形象理解自动配置流程：
 
-![img](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/8/6/1650e0e47481e59a~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png)
+![img](https://pcc.huitogo.club/z0/1650e0e47481e59a~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png)

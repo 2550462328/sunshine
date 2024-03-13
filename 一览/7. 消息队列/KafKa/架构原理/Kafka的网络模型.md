@@ -6,7 +6,7 @@ Kafka 基于高吞吐率和效率考虑，并没有使用第三方网络框架�
 
 **单线程 Selector 模型**
 
-![KafkaClient](http://static.iocoder.cn/00e8ec59cf40c62db53b4d66dc45e17c)
+![KafkaClient](https://pcc.huitogo.club/z0/00e8ec59cf40c62db53b4d66dc45e17c)
 
 - 单线程模式适用于并发链接数小，逻辑简单，数据量小。
 - 在 Kafka 中，Consumer 和 Producer 都是使用的上面的单线程模式。这种模式不适合 Kafka 的服务端，在服务端中请求处理过程比较复杂，会造成线程阻塞，一旦出现后续请求就会无法处理，会造成大量请求超时，引起雪崩。而在服务器中应该充分利用多线程来处理执行逻辑。
@@ -19,7 +19,7 @@ Kafka 基于高吞吐率和效率考虑，并没有使用第三方网络框架�
 
 **多线程 Selector 模型**
 
-![KafkaServer](http://static.iocoder.cn/8493bc98876609462fba617d520d1b9a)
+![KafkaServer](https://pcc.huitogo.club/z0/8493bc98876609462fba617d520d1b9a)
 
 Broker 的内部处理流水线化，分为多个阶段来进行(SEDA)，以提高吞吐量和性能，尽量避免 Thead 盲等待，以下为过程说明。
 

@@ -1,18 +1,18 @@
 Spring Cloud组件最早是Netflix研发的
 
-![Spring Cloud的 组件](http://static.iocoder.cn/4935fcc0a209fd1d4b70cade94986f59)
+![Spring Cloud的 组件](https://pcc.huitogo.club/z0/4935fcc0a209fd1d4b70cade94986f59)
 
 
 
 我们最为熟知的，可能就是 Spring Cloud Netflix ，它是 Netflix 公司基于它们自己的 Eureka、Hystrix、Zuul、Ribbon 等组件，构建的一个 Spring Cloud 实现技术栈。
 
-![img](https://img-blog.csdnimg.cn/20181226104611145.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2l0c29mdGNoZW5mZWk=,size_16,color_FFFFFF,t_70)
+![img](https://pcc.huitogo.club/z0/20181226104611145.png)
 
 
 
 Eureka + Ribbon + Feign + Hystrix + Zuul 交互图：
 
-![Eureka + Ribbon + Feign + Hystrix + Zuul](http://static.iocoder.cn/64e9a7827c76d38f899160da6f736ea2)
+![Eureka + Ribbon + Feign + Hystrix + Zuul](https://pcc.huitogo.club/z0/64e9a7827c76d38f899160da6f736ea2)
 
 但是
 

@@ -8,7 +8,7 @@ docker compose [-f=<arg>...] [options] [COMMAND] [ARGS...]
 
 
 
-##### 4.1 options
+##### 1.1 options
 
 - -f, --file FILE  指定使用的 Compose 模板文件，默认为 docker-compose.yml，可以多次指定。
 - -p, --project-name NAME 指定项目名称，默认将使用所在目录名称作为项目名。
@@ -17,7 +17,7 @@ docker compose [-f=<arg>...] [options] [COMMAND] [ARGS...]
 
 
 
-##### 5.2 COMMAND
+##### 1.2 COMMAND
 
 **1）build**
 

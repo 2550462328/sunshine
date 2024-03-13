@@ -6,7 +6,7 @@
 - Target     目前地址
 - LoadBalancer     ribbon负载均衡
 
-![img](https://static.iocoder.cn/252461fbb6d64d3dbc1914b7eadbfb86)
+![img](https://pcc.huitogo.club/z0/252461fbb6d64d3dbc1914b7eadbfb86)
 
 - 首先，用户调用 Feign 创建的动态代理。
 - 然后，Feign 调用 Ribbon 发起调用流程。

@@ -1,7 +1,7 @@
 Hystrix 断路器有三种状态，分别是关闭（Closed）、打开（Open）与半开（Half-Open），三种状态转化关系如下：
 
 
-![image-20191104211642271](https://doocs.gitee.io/advanced-java/docs/high-availability/images/hystrix-circuit-breaker-state-machine.png)
+![image-20191104211642271](https://pcc.huitogo.club/z0/hystrix-circuit-breaker-state-machine.png)
 
 - 初始时，断路器处于`CLOSED`状态，链路处于健康状态。当满足如下条件，断路器从`CLOSED`变成`OPEN`状态：
   - **周期**( 可配，`HystrixCommandProperties.default_metricsRollingStatisticalWindow = 10000 ms` )内，总请求数超过一定**量**( 可配，`HystrixCommandProperties.circuitBreakerRequestVolumeThreshold = 20` ) 。
@@ -116,7 +116,7 @@ Hystrix 并不是只要有一条请求经过就去统计，而是将整个滑动
 
 这个配合Hystrix的工作流程图理解比较好：
 
-![Hystrix 原理](http://static.iocoder.cn/8848af2a2e093d0421d1c7113dedefc1)
+![Hystrix 原理](https://pcc.huitogo.club/z0/8848af2a2e093d0421d1c7113dedefc1)
 
 
 

@@ -1,6 +1,6 @@
 我们先看下RocketMQ的工作流程：
 
-![整体流程](http://static.iocoder.cn/images/RocketMQ/2019_11_12/02.png)
+![整体流程](https://pcc.huitogo.club/z0/r412351231.png)
 
 1. 启动 **Namesrv**，Namesrv起 来后监听端口，等待 Broker、Producer、Consumer 连上来，相当于一个路由控制中心。
 

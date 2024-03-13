@@ -426,7 +426,7 @@ public T newInstance(SqlSession sqlSession) {
 
 最终执行流程图如下：
 
-![流程](http://static.iocoder.cn/images/MyBatis/2020_03_15/02.png)
+![流程](https://pcc.huitogo.club/z0/02.png)
 
 
 

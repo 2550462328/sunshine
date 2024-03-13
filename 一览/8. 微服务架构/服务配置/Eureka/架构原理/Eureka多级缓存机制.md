@@ -1,6 +1,6 @@
 #### 1. Eureka服务端缓存
 
-![image-20240301102132667](C:\Users\huizhang43\AppData\Roaming\Typora\typora-user-images\image-20240301102132667.png)
+![image-20240301102132667](https://pcc.huitogo.club/z0/image-20240301102132667.png)
 
 1. **服务拉取**：在拉取注册表的时候，首先会从ReadOnlyCacheMap中查询缓存的注册表信息，如果没有就去找ReadWriteCacheMap缓存注册表，如果还没有就直接从内存中读取EurekaServer中实际的注册表数据，拿到后再填充各级缓存。
 
@@ -113,7 +113,7 @@
 
 因此，极限情况下服务消费者最长感知时间将无限趋近 240s。
 
-![img](https://static001.infoq.cn/resource/image/74/c2/747e2a2f01f2959a17cb5241f81748c2.png)
+![img](https://pcc.huitogo.club/z0/747e2a2f01f2959a17cb5241f81748c2.png)
 
 
 

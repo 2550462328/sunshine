@@ -6,7 +6,7 @@ NIO在等待就绪中是异步的，这个在实际操作中如果一个连接�
 
 在记录事件之前我们要先**注册这几个事件到来的对应的处理器**。然后单线程去死循环选择就绪的事件（在java api上调用的是**select**方法，在linux上2.6之前是select、poll，2.6之后是**epoll**，Windows是IOCP），注意**select方法是阻塞的**，新事件到来的时候，会在selector上注册标记位，标志可读、可写或者有连接到来。通常**连接的处理和读写的处理通常可以选择分开**，这样对于海量连接的注册和读写就可以分发。
 
-![img](http://pcc.huitogo.club/f995cacd9b39623478d80ced1c590fae)
+![img](https://pcc.huitogo.club/f995cacd9b39623478d80ced1c590fae)
 
 
 
@@ -30,7 +30,7 @@ NIO在等待就绪中是异步的，这个在实际操作中如果一个连接�
 
 ##### 1.1 单 Reactor 单线程模型
 
-![单 Reactor 单线程模型](http://static.iocoder.cn/images/Netty/2018_05_01/01.png)
+![单 Reactor 单线程模型](https://pcc.huitogo.club/z0/2024031280812312313.png)
 
 Reactor 示例代码如下：
 
@@ -97,7 +97,7 @@ Acceptor 主要任务是构造 Handler 。
 
 ##### 1.2 单 Reactor 多线程模型
 
-![单 Reactor 多线程模型](http://static.iocoder.cn/images/Netty/2018_05_01/02.png)
+![单 Reactor 多线程模型](https://pcc.huitogo.club/z0/20240312090908908.png)
 
 相对于第一种单线程的模式来说，在处理业务逻辑，也就是获取到 IO 的读写事件之后，交由线程池来处理，这样可以减小主 Reactor 的性能开销，从而更专注的做事件分发工作了，从而提升整个应用的吞吐。
 
@@ -169,7 +169,7 @@ class MultiThreadHandler implements Runnable {
 
 ##### 1.3 多 Reactor 多线程模型
 
-![多 Reactor 多线程模型](http://static.iocoder.cn/images/Netty/2018_05_01/03.png)
+![多 Reactor 多线程模型](https://pcc.huitogo.club/z0/51231251123120240312.png)
 
 第三种模型比起第二种模型，是将 Reactor 分成两部分：
 

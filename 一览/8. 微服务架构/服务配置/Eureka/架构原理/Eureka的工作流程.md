@@ -1,4 +1,4 @@
-![Eureka 集群](http://static.iocoder.cn/25e9704082444add1192bc69c87198e9)
+![Eureka 集群](https://pcc.huitogo.club/z0/25e9704082444add1192bc69c87198e9)
 
 - 作用：实现服务治理（服务注册与发现）
 - 简介：Spring Cloud Eureka是Spring Cloud Netflix项目下的服务治理模块。
@@ -14,7 +14,7 @@
 
 Eureka 原理，整体如下图：
 
-![Eureka 原理](http://static.iocoder.cn/80c74f1d7cb9fc2a416e7b61a055d778)
+![Eureka 原理](https://pcc.huitogo.club/z0/80c74f1d7cb9fc2a416e7b61a055d778)
 
 
 

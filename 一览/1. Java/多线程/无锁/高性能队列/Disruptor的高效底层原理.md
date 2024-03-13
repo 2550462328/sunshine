@@ -2,8 +2,6 @@
 
 先看一下Disruptor中重要组件之间的协作关系
 
-
-
 ![img](http://pcc.huitogo.club/5833b00a0505618b978df3ce9351ca24)
 
 
@@ -117,8 +115,6 @@ public final class MultiProducerSequencer extends AbstractSequencer{
 
 
 这里waitStrategy 指的是消费者的等待策略，即当前没有可消费event消息时的 消费者线程的行为，有以下几种
-
-
 
 ![img](http://pcc.huitogo.club/4beec8629c99c6903929b7edfc61f3a9)
 
@@ -269,8 +265,6 @@ private void fill(EventFactory<E> eventFactory)
 
 
 实际entries的长度 = ringBufferSize + 2* BUFFER_PAD，这里赋值的时候是在中间一段 ringBufferSize的长度进行赋值，即前后都预留了 BUFFER_PAD长度的空白作为缓冲地带，BUFFER_PAD = 2^7 >>> 2 的长度，即2^5 的长度
-
-
 
 ![img](http://pcc.huitogo.club/7b86163b13cc856ced3f8af4815da24a)
 

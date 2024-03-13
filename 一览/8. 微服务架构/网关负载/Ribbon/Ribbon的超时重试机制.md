@@ -4,7 +4,7 @@ Eureka的服务治理强调了CAP原则中的AP，即可用性和可靠性。它
 
 因为服务剔除的延迟，consumer并不会立即得到最新的服务列表，此时再次访问你会得到错误提示
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190407155004593.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MzM0MTM1,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://pcc.huitogo.club/z0/20190407155004593.png)
 
 
 
