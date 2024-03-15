@@ -1,15 +1,25 @@
+默认情况下，Spring不允许循环依赖，如果存在循环依赖，会抛出`BeanCurrentlyInCreationException`异常。这是因为Spring默认使用构造函数注入或者setter注入的方式创建Bean，如果两个Bean之间存在循环依赖，则无法满足其中一个Bean的创建要求。
+
+但是，在某些情况下，循环依赖是必要的。例如，两个Bean需要相互引用对方的属性或方法才能正常工作。这时，可以将`allowCircularReferences`属性设置为true，允许循环依赖的存在。
+
+当`allowCircularReferences`属性设置为true时，Spring会使用一个特殊的方式创建Bean，即使用代理对象来解决循环依赖的问题。这种方式可以满足循环依赖的要求，但同时也会带来一些额外的性能开销和复杂性。
+
+需要注意的是，循环依赖可能导致一些问题，例如**无限递归**、**死锁**等，因此建议在确保必要性的情况下才使用循环依赖。
+
+
+
 Spring 循环依赖的**场景**有两种：
 
 1. 构造器的循环依赖。
 2. field 属性的循环依赖。
 
-对于构造器的循环依赖，Spring 是无法解决的，只能抛出 BeanCurrentlyInCreationException 异常表示循环依赖，**所以下面我们分析的都是基于 field 属性的循环依赖**。
+对于构造器的循环依赖，Spring 是无法解决的，只能抛出 `BeanCurrentlyInCreationException` 异常表示循环依赖，**所以下面我们分析的都是基于 field 属性的循环依赖**。
 
 > 注：如果项目中不可避免需要使用循环依赖，则必须使用setter注入替代构造器注入。
 
 
 
-另外Spring 只解决 scope 为 singleton 的循环依赖。对于scope 为 prototype 的 bean ，Spring 无法解决，直接抛出 BeanCurrentlyInCreationException 异常。
+另外Spring 只解决 scope 为 singleton 的循环依赖。对于scope 为 prototype 的 bean ，Spring 无法解决，直接抛出 `BeanCurrentlyInCreationException` 异常。
 
 为什么 Spring 不处理 prototype bean 呢？其实如果理解 Spring 是如何解决 singleton bean 的循环依赖就明白了。这里先卖一个关子，我们先来关注 Spring 是如何解决 singleton bean 的循环依赖的。
 
@@ -18,8 +28,6 @@ Spring 循环依赖的**场景**有两种：
 存在循环依赖的场景下的getBean顺序图：
 
 ![img](http://pcc.huitogo.club/258fb9ad86259c92030ee4cbb9f68a44)
-
-
 
 总结：**借助三个缓存，第一个缓存存储bean实例，第二个缓存存储bean的半成品，第三个缓存存储bean的工厂（避免多次调用bean的创建工厂）**
 
@@ -110,4 +118,3 @@ protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, 
 	return exposedObject;
 }
 ```
-
